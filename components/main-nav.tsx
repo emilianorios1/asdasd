@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
 
 interface MainNavProps {
-  items?: NavItem[]
+  items?: NavItem[] 
 }
 
 export function MainNav({ items }: MainNavProps) {
