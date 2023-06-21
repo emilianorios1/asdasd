@@ -1,10 +1,6 @@
 import { DataTable } from "@/components/ui/data-table";
 import { ColumnDef } from "@tanstack/react-table";
-
-type Category = {
-  id: number
-  name: string
-}
+import { Category } from "@/interfaces/category";
 
 const columns: ColumnDef<Category>[] = [
   {
@@ -16,7 +12,6 @@ const columns: ColumnDef<Category>[] = [
     header: "Name",
   },
 ]
-
 
 async function getCategories(): Promise<Category[]> {
   const res = await fetch(process.env.NEXT_PUBLIC_API_BASE_URL+'/api/categories', { cache: 'no-store' });
