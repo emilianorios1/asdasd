@@ -20,7 +20,7 @@ export default function IndexPage() {
         <Link
           href={siteConfig.links.docs}
           target="_blank"
-          rel="noreferrer"
+          rel="noreferrer" 
           className={buttonVariants()}
         >
           Documentation
