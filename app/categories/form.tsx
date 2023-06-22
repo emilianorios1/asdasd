@@ -26,8 +26,6 @@ const formSchema = z.object({
  
 export function CategoryForm() {
   const router = useRouter()
-
-
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
