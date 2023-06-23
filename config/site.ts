@@ -2,8 +2,7 @@ export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
   name: "Marketplace TP",
-  description:
-    "Desarrollo de Software - UTN FRRO",
+  description: "Desarrollo de Software - UTN FRRO",
   mainNav: [
     {
       title: "Home",
@@ -11,8 +10,8 @@ export const siteConfig = {
     },
     {
       title: "Categories",
-      href:"/categories"
-    }
+      href: "/categories",
+    },
   ],
   links: {
     twitter: "https://twitter.com/shadcn",

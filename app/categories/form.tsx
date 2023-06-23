@@ -1,8 +1,11 @@
 "use client"
 
+import { useTransition } from "react"
+import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
 import { useForm } from "react-hook-form"
+import * as z from "zod"
+
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -14,16 +17,13 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useRouter } from 'next/navigation'
-import { useTransition } from "react"
-
 
 const formSchema = z.object({
   name: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
 })
- 
+
 export function CategoryForm() {
   const router = useRouter()
   // 1. Define your form.
@@ -33,17 +33,17 @@ export function CategoryForm() {
       name: "",
     },
   })
-  
+
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    await fetch(process.env.NEXT_PUBLIC_API_BASE_URL+'/api/categories', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+    await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/categories", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
-    });
-    router.refresh();
+    })
+    router.refresh()
   }
 
   return (
@@ -68,5 +68,5 @@ export function CategoryForm() {
         <Button type="submit">Submit</Button>
       </form>
     </Form>
-  )  
+  )
 }
