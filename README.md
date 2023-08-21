@@ -37,8 +37,8 @@ cualquier pregunta antes de concretar una venta.
 - Noticias/novedades sobre el mercado internacional o nuevas regulaciones en el
 mercado regional.
 - Autenticación de usuario mediante librerías como: auth0, next-ath, passport js.
-Tecnologías utilizadas
-Tecnologías Front
+## Tecnologías utilizadas
+### Tecnologías Front
 ### Next.js: 
 Utilizaremos Next.js, un framework de React para aplicaciones web, que nos
 brindará una base sólida y escalable para el desarrollo front-end de la plataforma.
@@ -47,7 +47,7 @@ Utilizaremos Tailwind CSS, un framework de diseño centrado en clases, para
 estilizar y diseñar la interfaz de usuario de nuestra plataforma. Con la amplia gama de
 utilidades y componentes predefinidos de Tailwind CSS, podremos crear una interfaz
 moderna y altamente personalizable.
-Tecnologias Backend
+### Tecnologias Backend
 ### PostgreSQL: 
 como nuestro sistema de gestión de bases de datos.
 Node.js: Implementaremos la lógica del lado del servidor utilizando Node.js, un entorno de
