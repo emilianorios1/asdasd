@@ -23,7 +23,15 @@ const formSchema = z.object({
   title: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
-  photo: z.instanceof(File)
+  picture: z.any()
+  .refine(
+    (file) => file?.size <= 500000, 
+    `Max image size is 5MB.`
+    )
+  .refine(
+    (file) => ["image/jpeg", "image/jpg", "image/png", "image/webp"].includes(file?.type),
+    "Only .jpg, .jpeg, .png and .webp formats are supported."
+  )
 })
 
 export function PublishForm() {
@@ -32,22 +40,26 @@ export function PublishForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
-      photo: new File([], "")
+      title: ""
     },
   })
 
-  // 2. Define a submit handler.
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    //await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/categories", {
-      //method: "POST",
-      //headers: { "Content-Type": "application/json" },
-      //body: JSON.stringify(values),
-    //})
     console.log(values)
-    
+    const cloudinaryImageData = new FormData();
+    cloudinaryImageData.append("file", values.picture);
+    cloudinaryImageData.append("upload_preset", "aakc5a85");
+    const uploadResponse = await fetch(
+      "https://api.cloudinary.com/v1_1/dsw-publications/image/upload",
+      {
+        method: "POST",
+        body: cloudinaryImageData,
+      }
+    );
+    const uploadedImageData = await uploadResponse.json();
+    const imageUrl = uploadedImageData.secure_url;
+    console.log(imageUrl);
     router.refresh()
   }
 
@@ -72,24 +84,25 @@ export function PublishForm() {
         />
         <FormField
           control={form.control}
-          name="photo" 
-          render={({ field }) => (
+          name="picture"
+          render={({ field: { value, onChange, ...fieldProps } }) => (
             <FormItem>
-              <FormLabel>Media</FormLabel>
+              <FormLabel>Picture</FormLabel>
               <FormControl>
                 <Input
-                  accept=".jpg, .jpeg, .png,"
+                  {...fieldProps}
+                  placeholder="Picture"
                   type="file"
-                  required
+                  accept="image/*"
+                  onChange={(event) =>
+                    onChange(event.target.files && event.target.files[0])
+                  }
                 />
               </FormControl>
-              <FormDescription>
-                Only .jpg, .jpeg, .png file extensions are supported.
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
-          />
+/>
         <Button type="submit">Submit</Button>
       </form>
     </Form>
