@@ -23,7 +23,7 @@ const formSchema = z.object({
   title: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
-  picture: z.any()
+  image: z.any()
   .refine(
     (file) => file?.size <= 500000, 
     `Max image size is 5MB.`
@@ -40,26 +40,23 @@ export function PublishForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: ""
+      title: "",
+      image: new File([], "")
     },
   })
 
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-    const cloudinaryImageData = new FormData();
-    cloudinaryImageData.append("file", values.picture);
-    cloudinaryImageData.append("upload_preset", "aakc5a85");
-    const uploadResponse = await fetch(
-      "https://api.cloudinary.com/v1_1/dsw-publications/image/upload",
+    const imageData = new FormData();
+    imageData.set("image", values.image);
+    const imageResponse = await fetch("/api/image_upload",
       {
         method: "POST",
-        body: cloudinaryImageData,
+        body: imageData,
       }
     );
-    const uploadedImageData = await uploadResponse.json();
-    const imageUrl = uploadedImageData.secure_url;
-    console.log(imageUrl);
+    const imageResponseJson = await imageResponse.json();
+    console.log(imageResponseJson.url);
+
     router.refresh()
   }
 
@@ -84,14 +81,14 @@ export function PublishForm() {
         />
         <FormField
           control={form.control}
-          name="picture"
+          name="image"
           render={({ field: { value, onChange, ...fieldProps } }) => (
             <FormItem>
               <FormLabel>Picture</FormLabel>
               <FormControl>
                 <Input
                   {...fieldProps}
-                  placeholder="Picture"
+                  placeholder="Image"
                   type="file"
                   accept="image/*"
                   onChange={(event) =>
