@@ -5,8 +5,10 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { PublishForm } from "@/app/publish/form"
+import { getCategories } from "@/services/dsw-back";
 
-export default function PublishPage() {
+export default async function PublishPage() {
+  const categories = await getCategories();
   return (
     <div>
       <div className="mt-10 flex justify-center">
@@ -15,7 +17,7 @@ export default function PublishPage() {
             <CardTitle>Publish</CardTitle>
           </CardHeader>
           <CardContent>
-            <PublishForm></PublishForm>
+            <PublishForm categories = {categories}/>
           </CardContent>
         </Card>
       </div>

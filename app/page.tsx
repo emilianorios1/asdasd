@@ -33,6 +33,7 @@ export default function IndexPage() {
         >
           GitHub
         </Link>
+        
       </div>
     </section>
   )

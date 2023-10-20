@@ -1,6 +1,6 @@
 "use client"
 
-import { useTransition } from "react"
+import { use, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -17,7 +17,14 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-
+import { Category } from "@/interfaces/category"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -31,22 +38,28 @@ const formSchema = z.object({
   .refine(
     (file) => ["image/jpeg", "image/jpg", "image/png", "image/webp"].includes(file?.type),
     "Only .jpg, .jpeg, .png and .webp formats are supported."
-  )
+  ),
+  category: z.string()
 })
 
-export function PublishForm() {
-  const router = useRouter()
+interface PublishFormProps{
+  categories:Category[]
+} 
+
+export function PublishForm({categories}:PublishFormProps) {
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      image: new File([], "")
+      image: new File([],""),
+      category: ""
     },
   })
 
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const imageData = new FormData();
+    const imageData = new FormData(); 
     imageData.set("image", values.image);
     const imageResponse = await fetch("/api/image_upload",
       {
@@ -57,9 +70,7 @@ export function PublishForm() {
     const imageResponseJson = await imageResponse.json();
     console.log(imageResponseJson.url);
 
-    router.refresh()
   }
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -99,9 +110,35 @@ export function PublishForm() {
               <FormMessage />
             </FormItem>
           )}
-/>
+        />
+        <FormField
+          control={form.control}
+          name="category"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Publication category</FormLabel>
+              <FormControl>
+              <Select>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Theme" />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((category)  => {
+                  return <SelectItem key={category.id} value={category.name}>{category.name}</SelectItem>
+                  })}
+                </SelectContent>
+              </Select>
+              </FormControl>
+              <FormDescription>
+                Publication category.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <Button type="submit">Submit</Button>
       </form>
+      
     </Form>
   )
 }
