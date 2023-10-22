@@ -69,6 +69,7 @@ export function PublishForm({categories}:PublishFormProps) {
     );
     const imageResponseJson = await imageResponse.json();
     console.log(imageResponseJson.url);
+    console.log(values);
 
   }
   return (
@@ -116,21 +117,21 @@ export function PublishForm({categories}:PublishFormProps) {
           name="category"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Publication category</FormLabel>
-              <FormControl>
-              <Select>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Theme" />
-                </SelectTrigger>
+              <FormLabel>Category</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select publication category." />
+                  </SelectTrigger>
+                </FormControl>
                 <SelectContent>
-                  {categories.map((category)  => {
-                  return <SelectItem key={category.id} value={category.name}>{category.name}</SelectItem>
-                  })}
-                </SelectContent>
+                    {categories.map((category)  => {
+                    return <SelectItem key={category.id} value={category.id.toString()}>{category.name}</SelectItem>
+                    })}
+                  </SelectContent>
               </Select>
-              </FormControl>
               <FormDescription>
-                Publication category.
+                Category
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -142,3 +143,5 @@ export function PublishForm({categories}:PublishFormProps) {
     </Form>
   )
 }
+
+
