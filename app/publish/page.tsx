@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/card"
 import { PublishForm } from "@/app/publish/form"
 import { getCategories } from "@/services/dsw-back";
+import Publicaciones from "../publicaciones";
 
 export default async function PublishPage() {
   const categories = await getCategories();

@@ -2,6 +2,8 @@ import Link from "next/link"
 
 import { siteConfig } from "@/config/site"
 import { buttonVariants } from "@/components/ui/button"
+import Publicaciones from "./publicaciones"
+
 
 export default function IndexPage() {
   return (
@@ -15,6 +17,7 @@ export default function IndexPage() {
           Accessible and customizable components that you can copy and paste
           into your apps. Free. Open Source. And Next.js 13 Ready.
         </p>
+    
       </div>
       <div className="flex gap-4">
         <Link
@@ -34,6 +37,9 @@ export default function IndexPage() {
           GitHub
         </Link>
         
+      </div>
+      <div>
+        <Publicaciones/>
       </div>
     </section>
   )
