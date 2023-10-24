@@ -42,11 +42,7 @@ const formSchema = z.object({
   category: z.string()
 })
 
-interface PublishFormProps{
-  categories:Category[]
-} 
-
-export function PublishForm({categories}:PublishFormProps) {
+export function PublishForm({categories}: {categories: Category[]}) {
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

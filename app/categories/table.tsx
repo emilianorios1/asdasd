@@ -1,8 +1,9 @@
+"use client"
+
 import { Category } from "@/interfaces/category"
 import { ColumnDef } from "@tanstack/react-table"
-
 import { DataTable } from "@/components/ui/data-table"
-import { getCategories } from "@/services/dsw-back"
+import { CategoriesTableActions } from "./categories-table-actions"
 
 const columns: ColumnDef<Category>[] = [
   {
@@ -13,9 +14,16 @@ const columns: ColumnDef<Category>[] = [
     accessorKey: "name",
     header: "Name",
   },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const category = row.original
+      return <CategoriesTableActions category = {category}/>
+    },
+  },
 ]
 
-export async function CategoriesTable() {
-  const data = await getCategories()
-  return <DataTable columns={columns} data={data} />
+
+export function CategoriesTable({ categories }: { categories: Category[] }) {
+  return <DataTable columns={columns} data={categories} />
 }

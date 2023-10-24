@@ -1,6 +1,5 @@
 "use client"
 
-import { useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -17,6 +16,8 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { DialogClose, DialogFooter } from "@/components/ui/dialog"
+import { Category } from "@/interfaces/category"
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -24,25 +25,32 @@ const formSchema = z.object({
   }),
 })
 
-export function CategoryForm() {
+export function CategoryForm({ category }: { category?: Category }) {
   const router = useRouter()
-  // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      name: category?.name || "",
     },
   })
 
-  // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/categories", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
-    })
+  async function onSubmit(form_values: z.infer<typeof formSchema>) {
+    if (category) {
+      await fetch(
+        process.env.NEXT_PUBLIC_API_BASE_URL + "/api/categories/" + category.id,
+        {
+          method: "PUT", 
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form_values),
+        }
+      );
+    } else {
+      await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/categories", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form_values),
+      });
+    }
     router.refresh()
   }
 
@@ -59,13 +67,20 @@ export function CategoryForm() {
                 <Input placeholder="Name" {...field} />
               </FormControl>
               <FormDescription>
-                This is the name of the new category.
+                Category name.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <DialogFooter className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+          <DialogClose asChild>
+            <Button type="submit">Submit</Button>
+          </DialogClose>
+          <DialogClose asChild>
+            <Button variant="secondary">Cancel</Button>
+          </DialogClose>
+        </DialogFooter>
       </form>
     </Form>
   )
