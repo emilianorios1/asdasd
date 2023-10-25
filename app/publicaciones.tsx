@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { getPublications } from "@/services/dsw-back"
+import { getPublications } from "@/services/publications"
 // Swiper
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
