@@ -6,20 +6,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { CategoryForm } from "@/app/categories/form"
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { CategoriesTable } from "./table"
+import { DialogCategoryForm } from "@/app/categories/dialog-form"
 import { getCategories } from "@/services/categories"
-import { Button } from "@/components/ui/button"
+import { DataTable } from "@/components/ui/data-table";
+import { columns } from "./table-columns";
 
 export default async function CategoriesPage() {
   const categories = await getCategories();
@@ -29,23 +19,10 @@ export default async function CategoriesPage() {
         <Card>
           <CardHeader className="items-center">
             <CardTitle>Categories</CardTitle>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button >Agregar nueva</Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Add</DialogTitle>
-                  <DialogDescription>
-                    You are about to add a new category.
-                  </DialogDescription>
-                </DialogHeader>
-                <CategoryForm/>
-              </DialogContent>
-            </Dialog>
+            <DialogCategoryForm/>
           </CardHeader>
           <CardContent className=" flex justify-center ">
-            <CategoriesTable categories={categories} />
+            <DataTable data={categories} columns={columns} />
           </CardContent>
         </Card>
       </div>
