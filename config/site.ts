@@ -13,8 +13,20 @@ export const siteConfig = {
       href: "/categories",
     },
     {
-      title: "Publicaciones",
+      title: "Publications",
       href: "/publish",
+    },
+    {
+      title: "Brands",
+      href: "/brands",
+    },
+    {
+      title: "Models",
+      href: "/models",
+    },
+    {
+      title: "My Cars",
+      href: "/my-cars",
     },
   ],
   links: {
