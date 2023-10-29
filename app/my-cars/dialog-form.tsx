@@ -28,9 +28,12 @@ import {
 } from "@/components/ui/dialog"
 import { useEffect, useState } from "react"
 import { useToast } from "@/components/ui/use-toast"
-import { DropdownYears } from "./dropdown-years"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Brand } from "@/interfaces/brand"
+import { Model } from "@/interfaces/model"
+
 const formSchema = z.object({
+  brand: z.string(),
   model: z.string().min(2, {
     message: "Usermodel must be at least 2 characters.",
   }),
@@ -42,10 +45,18 @@ const formSchema = z.object({
   color: z.string()
 })
 
-export function DialogCarForm({ car }: { car?: Car }) {
+export function DialogCarForm({ brands, models, car  }: {brands: Brand[], models: Model[], car?: Car }) {
   const router = useRouter()
   let [open, setOpen] = useState(false);
   const {toast} = useToast();
+  const [selectedBrand, setSelectedBrand] = useState("");
+  const [filteredModels, setFilteredModels] = useState<Model[]>([]);
+  const currentYear = new Date().getFullYear();
+  const years: Number[] = [];
+  for (let year = currentYear; year >= 1900; year--) {
+    years.push(year);
+  }
+
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema)
@@ -57,6 +68,21 @@ export function DialogCarForm({ car }: { car?: Car }) {
       form.reset({model: car?.model || ""});
     }
   }, [open, form, car?.model]);
+
+  const handleBrandChange = (selectedBrandId: String) => {
+    console.log(selectedBrandId)
+    const brand = brands.find((brand) => brand.id.toString() === selectedBrandId);
+    if (brand) {
+      const brandModels = models.filter((model) => model.brandId === brand.id);
+      setFilteredModels(brandModels);
+      console.log(brand)
+      console.log(brandModels)
+    } else {
+      setFilteredModels([]);
+    }
+  };
+  
+
 
   async function onSubmit(form_values: z.infer<typeof formSchema>) {
     try {
@@ -102,13 +128,6 @@ export function DialogCarForm({ car }: { car?: Car }) {
     }
   }
 
-  const currentYear = new Date().getFullYear();
-  const years: Number[] = [];
-
-  for (let year = currentYear; year >= 1900; year--) {
-    years.push(year);
-  }
-
   return (
     <Form {...form}>
       <Dialog open={open} onOpenChange={setOpen}>
@@ -123,13 +142,54 @@ export function DialogCarForm({ car }: { car?: Car }) {
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8" >
                 <FormField
                   control={form.control}
+                  name="brand"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Car Brand</FormLabel>
+                      <Select //onValueChange={field.onChange}
+                        onValueChange={(id) => {
+                          field.onChange(id);
+                          handleBrandChange(id);
+                        }} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select car Brand." />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="max-h-[10rem]">
+                        {brands
+                          .slice() // Create a shallow copy of the original array
+                          .sort((a, b) => a.name.localeCompare(b.name)) // Sort the copy alphabetically by brand name
+                          .map((brand) => (
+                            <SelectItem key={brand.name} value={brand.id.toString()}>
+                              {brand.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
                   name="model"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Model</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Model..." {...field} />
-                      </FormControl>
+                      <FormLabel>Car Model</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select car model." />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="max-h-[10rem]">
+                          {filteredModels.map((model)  => {
+                              return <SelectItem key={model.name} value={model.id.toString()}>{model.name}</SelectItem>
+                              })
+                            }
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -139,21 +199,20 @@ export function DialogCarForm({ car }: { car?: Car }) {
                   name="year"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Year</FormLabel>
-                      <FormControl>
+                      <FormLabel>Car Year</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select car year." />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className=" max-h-[10rem]">
-                            {years.map((year)  => {
-                            return <SelectItem key={year.toString()} value={year.toString()}>{year.toString()}</SelectItem>
-                            })}
-                          </SelectContent>
+                        <SelectContent>
+                          {years.map((year)  => {
+                              return <SelectItem key={year.toString()} value={year.toString()}>{year.toString()}</SelectItem>
+                              })
+                            }
+                        </SelectContent>
                       </Select>
-                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
