@@ -206,7 +206,7 @@ export function DialogCarForm({ brands, models, car  }: {brands: Brand[], models
                             <SelectValue placeholder="Select car year." />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
+                        <SelectContent className="max-h-[10rem]">
                           {years.map((year)  => {
                               return <SelectItem key={year.toString()} value={year.toString()}>{year.toString()}</SelectItem>
                               })
