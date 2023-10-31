@@ -22,7 +22,7 @@ export default async function CategoriesPage() {
             <DialogBrandForm/>
           </CardHeader>
           <CardContent className=" flex justify-center ">
-            <DataTable data={brands} columns={columns} />
+          <DataTable data={brands} columns={columns} />
           </CardContent>
         </Card>
       </div>

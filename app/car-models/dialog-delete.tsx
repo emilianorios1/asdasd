@@ -10,16 +10,16 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/use-toast";
-import { Brand } from "@/interfaces/brand"; // Asegúrate de importar la interfaz correcta
+import { Model } from "@/interfaces/model"; // Asegúrate de importar la interfaz correcta
 import { useRouter } from "next/navigation";
 
-export function DialogBrandDelete({ brand }: { brand: Brand }) {
+export function DialogmodelDelete({ model }: { model: Model }) {
   const router = useRouter();
 
   const handleOnClick = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/brands/${brand.id}`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/models/${model.id}`,
         {
           method: "DELETE",
         }
@@ -41,7 +41,7 @@ export function DialogBrandDelete({ brand }: { brand: Brand }) {
       }
     } catch (error) {
       // Manejar errores inesperados o mostrar un mensaje de error al usuario
-      console.error("Error deleting brand:", error);
+      console.error("Error deleting model:", error);
       toast({
         description: "Unexpected error",
         title: "Error",
@@ -59,7 +59,7 @@ export function DialogBrandDelete({ brand }: { brand: Brand }) {
         <DialogHeader>
           <DialogTitle>Delete</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete brand `{brand.name}`?
+            Are you sure you want to delete model `{model.name}`?
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="sm:justify-start">

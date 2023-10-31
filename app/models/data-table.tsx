@@ -4,7 +4,6 @@ import { Model } from "@/interfaces/model"
 import { ColumnDef } from "@tanstack/react-table"
 import { DialogmodelForm } from "./dialog-form"
 import { DialogmodelDelete } from "./dialog-delete"
-import { getBrands } from "@/services/brands"
 import { Brand } from "@/interfaces/brand"
 import { DataTable } from "@/components/ui/data-table";
 

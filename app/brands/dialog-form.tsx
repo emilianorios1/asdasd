@@ -95,9 +95,6 @@ export function DialogBrandForm({ brand }: { brand?: Brand }) {
       });
     }
   }
-
-  
-
   return (
     <Form {...form}>
       <Dialog open={open} onOpenChange={setOpen}>
@@ -123,15 +120,7 @@ export function DialogBrandForm({ brand }: { brand?: Brand }) {
                     Brand name.
                   </FormDescription>
                   <FormMessage />
-
-
-                 
-
-                 
                 </FormItem>
-                
-           
-           
               )}
             />
             <Button type="submit">Submit</Button>
