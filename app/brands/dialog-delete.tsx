@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/use-toast";
-import { Brand } from "@/interfaces/brand"; // Asegúrate de importar la interfaz correcta
+import { Brand } from "@/interfaces/backend-interfaces"; // Asegúrate de importar la interfaz correcta
 import { useRouter } from "next/navigation";
 
 export function DialogBrandDelete({ brand }: { brand: Brand }) {

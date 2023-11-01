@@ -1,21 +1,26 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { DialogmodelForm } from "./dialog-form"
-import { DialogmodelDelete } from "./dialog-delete"
-import { Brand } from "@/interfaces/brand"
+import { Brand } from "@/interfaces/backend-interfaces"
 import { DataTable } from "@/components/ui/data-table";
 import { CarModel } from "@/interfaces/backend-interfaces"
 import { Button } from "@/components/ui/button"
 import { ArrowUpDown } from "lucide-react"
+import { DialogCarModelForm } from "./dialog-form";
+import { DialogCarModelDelete } from "./dialog-delete";
+import { DialogCarModelDetail } from "./dialog-detail";
 
 
 
-export function ModelsDataTable({ models, brands }: { models: CarModel[], brands: Brand[] },){
+export function CarModelsDataTable({ models, brands }: { models: CarModel[], brands: Brand[] },){
   const columns: ColumnDef<CarModel>[] = [
     {
       accessorKey: "id",
       header: "ID",
+    },
+    {
+      accessorKey: "brand.name",
+      header: "Brand"
     },
     {
       accessorKey: "name",
@@ -45,8 +50,9 @@ export function ModelsDataTable({ models, brands }: { models: CarModel[], brands
         const model = row.original
         return (
           <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-            <DialogmodelForm brands={brands} model={model} />
-            <DialogmodelDelete model={model} />
+            <DialogCarModelForm brands={brands} model={model} />
+            <DialogCarModelDelete model={model} />
+            <DialogCarModelDetail model={model} />
           </div>
         )
       },

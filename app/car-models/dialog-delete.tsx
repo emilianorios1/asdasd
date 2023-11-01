@@ -10,16 +10,16 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/use-toast";
-import { Model } from "@/interfaces/model"; // Asegúrate de importar la interfaz correcta
+import { CarModel } from "@/interfaces/backend-interfaces"; // Asegúrate de importar la interfaz correcta
 import { useRouter } from "next/navigation";
 
-export function DialogmodelDelete({ model }: { model: Model }) {
+export function DialogCarModelDelete({ model }: { model: CarModel }) {
   const router = useRouter();
 
   const handleOnClick = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/models/${model.id}`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/carModels/${model.id}`,
         {
           method: "DELETE",
         }

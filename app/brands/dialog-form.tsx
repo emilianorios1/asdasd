@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Brand } from "@/interfaces/brand"; // Asegúrate de importar la interfaz correcta
+import { Brand } from "@/interfaces/backend-interfaces"; // Asegúrate de importar la interfaz correcta
 import {
   Dialog,
   DialogClose,
@@ -32,8 +32,22 @@ import { useToast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
   name: z.string().min(2, {
-    message: "Brand name must be at least 2 characters.",
+    message: 'Brand name must be at least 2 characters.',
   }),
+  websiteUrl: z.string().refine((value) => {
+    try {
+      // Try creating a URL object with the value
+      new URL(value);
+      return true; // If successful, it's a valid URL
+    } catch {
+      return false; // If it fails, it's not a valid URL
+    }
+  }, { message: 'Invalid URL format for website. It should be something like https://example.com' }),
+  contactNumber: z.string().refine((value) => {
+    // Regular expression to validate a phone number (simple example)
+    const phoneRegex = /^\d{10}$/; // Modify this regex based on your phone number format
+    return phoneRegex.test(value);
+  }, { message: 'Invalid phone number format.' }),
 });
 
 export function DialogBrandForm({ brand }: { brand?: Brand }) {
@@ -48,11 +62,16 @@ export function DialogBrandForm({ brand }: { brand?: Brand }) {
   useEffect(() => {
     if (open) {
       // Reset the form when the dialog opens
-      form.reset({ name: brand?.name || "" });
+      form.reset({ 
+        name: brand?.name || "", 
+        websiteUrl: brand?.websiteUrl || "", 
+        contactNumber: brand?.contactNumber || "" 
+    });
     }
-  }, [open, form, brand?.name]);
+  }, [open, form, brand?.name, brand?.websiteUrl, brand?.contactNumber]);
 
   async function onSubmit(form_values: z.infer<typeof formSchema>) {
+    console.log(form_values)
     try {
       let response = new Response();
       if (brand) {
@@ -112,13 +131,36 @@ export function DialogBrandForm({ brand }: { brand?: Brand }) {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Brand</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input placeholder="Name" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    Brand name.
-                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="websiteUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Website URL</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Website URL" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="contactNumber"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Contact Number</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Contact Number" {...field} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

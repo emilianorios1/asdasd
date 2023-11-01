@@ -1,6 +1,8 @@
 export interface Brand {
     id: number;
     name: string;
+    websiteUrl: string;
+    contactNumber: string;
     cars: CarModel[];
     planes: PlaneModel[];
     boats: BoatModel[];
@@ -14,6 +16,7 @@ brandId: number;
 year: number;
 engineSize: number;
 numberOfDoors: number;
+imageUrl: string;
 carPublications: CarPublication[];
 }
 

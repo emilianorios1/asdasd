@@ -9,7 +9,7 @@ import {
 import { DialogBrandForm } from "@/app/brands/dialog-form"
 import { getBrands } from "@/services/brands"
 import { DataTable } from "@/components/ui/data-table";
-import { columns } from "./table-columns";
+import { BrandsDataTable } from "./data-table";
 
 export default async function CategoriesPage() {
   const brands = await getBrands();
@@ -22,7 +22,7 @@ export default async function CategoriesPage() {
             <DialogBrandForm/>
           </CardHeader>
           <CardContent className=" flex justify-center ">
-          <DataTable data={brands} columns={columns} />
+          <BrandsDataTable brands={brands} />
           </CardContent>
         </Card>
       </div>

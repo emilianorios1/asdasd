@@ -2,12 +2,11 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { Brand } from "@/interfaces/brand"
-import { Model } from "@/interfaces/model"
+import { Brand } from "@/interfaces/backend-interfaces"
+import { CarModel } from "@/interfaces/backend-interfaces"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-
 import { Button } from "@/components/ui/button"
 // Asegúrate de importar la interfaz correcta
 import {
@@ -38,16 +37,22 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useToast } from "@/components/ui/use-toast"
+import ImageInputCloudinary from "@/components/ui/image-input-cloudinary"
+import { Label } from "@/components/ui/label"
+import Image from "next/image"
 
 const formSchema = z.object({
   name: z.string().min(2, {
     message: "model name must be at least 2 characters.",
   }),
-  brandId: z.string()
+  brandId: z.number(),
+  engineSize: z.coerce.number(),
+  numberOfDoors: z.coerce.number().min(3).max(5),
+  imageUrl: z.string()
 })
 
-export function DialogmodelForm(
-  { model,brands }: { model?: Model,brands: Brand[] },
+export function DialogCarModelForm(
+  { model,brands }: { model?: CarModel, brands: Brand[] },
 ) {
   const router = useRouter()
   let [open, setOpen] = useState(false)
@@ -60,16 +65,23 @@ export function DialogmodelForm(
   useEffect(() => {
     if (open) {
       // Reset the form when the dialog opens
-      form.reset({ name: model?.name || "" })
+      form.reset({
+        name: model?.name || "",
+        brandId: model?.brandId || NaN,
+        engineSize: model?.engineSize || NaN,
+        numberOfDoors: model?.numberOfDoors || NaN,
+        imageUrl: model?.imageUrl || ""
+      })
     }
-  }, [open, form, model?.name])
+  }, [open, form, model?.name, model?.brandId, model?.engineSize, model?.numberOfDoors, model?.imageUrl])
 
   async function onSubmit(form_values: z.infer<typeof formSchema>) {
+    console.log(form_values)
     try {
       let response = new Response()
       if (model) {
         response = await fetch(
-          process.env.NEXT_PUBLIC_API_BASE_URL + "/api/models/" + model.id,
+          process.env.NEXT_PUBLIC_API_BASE_URL + "/api/carModels/" + model.id,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -78,7 +90,7 @@ export function DialogmodelForm(
         )
       } else {
         response = await fetch(
-          process.env.NEXT_PUBLIC_API_BASE_URL + "/api/models",
+          process.env.NEXT_PUBLIC_API_BASE_URL + "/api/carModels",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -134,10 +146,10 @@ export function DialogmodelForm(
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Brand</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={(value) => field.onChange(Number(value))} defaultValue={field.value.toString()}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select model brand." />
+                        <SelectValue  placeholder="Select model brand." />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="max-h-[10rem]">
@@ -153,7 +165,6 @@ export function DialogmodelForm(
                       })}
                     </SelectContent>
                   </Select>
-                  <FormDescription>Brand</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -163,12 +174,59 @@ export function DialogmodelForm(
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Model</FormLabel>
+                  <FormLabel>Model Name</FormLabel>
                   <FormControl>
                     <Input placeholder="Name" {...field} />
                   </FormControl>
-                  <FormDescription>Model name.</FormDescription>
                   <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="engineSize"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Engine Size</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="Engine Size" {...field}/>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="numberOfDoors"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Number of doors</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="Number of doors" {...field}/>
+                  </FormControl>
+                  <FormMessage/>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="imageUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Image</FormLabel>
+                  <FormControl>
+                    <ImageInputCloudinary onChange={field.onChange}/>
+                  </FormControl>
+                  <p className="text-sm text-muted-foreground">
+                  {field.value}
+                  </p>
+                  <Image 
+                  src={field.value} 
+                  alt={field.value}
+                  width={100}
+                  height={100}/>
+                  <Label></Label>
+                  <FormMessage/>
                 </FormItem>
               )}
             />
