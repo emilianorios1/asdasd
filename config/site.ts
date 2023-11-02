@@ -20,6 +20,14 @@ export const siteConfig = {
       title: "Car Publications",
       href: "/car-publications",
     },
+    {
+      title: "Boat Models",
+      href: "/boat-models",
+    },
+    {
+      title: "Boat Publications",
+      href: "/boat-publications",
+    },
   ],
   links: {
     twitter: "https://twitter.com/shadcn",
