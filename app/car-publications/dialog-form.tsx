@@ -1,13 +1,18 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { Brand, CarModel, CarPublication } from "@/interfaces/backend-interfaces"
+import {
+  Brand,
+  CarModel,
+  CarPublication,
+} from "@/interfaces/backend-interfaces"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+
 import { Button } from "@/components/ui/button"
-// Asegúrate de importar la interfaz correcta
 import {
   Dialog,
   DialogClose,
@@ -27,6 +32,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import ImageInputCloudinary from "@/components/ui/image-input-cloudinary"
 import { Input } from "@/components/ui/input"
 import {
   Select,
@@ -35,32 +41,40 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/components/ui/use-toast"
-import ImageInputCloudinary from "@/components/ui/image-input-cloudinary"
-import Image from "next/image"
 
 const formSchema = z.object({
   brandId: z.number(),
   carModelId: z.number(),
-  imageUrl: z.string().min(2,"Upload an image"),
-  mileage: z.coerce.number(),
+  imageUrl: z.string().min(2, "Upload an image"),
+  mileage: z.coerce.number().min(1),
   year: z.number(),
   transmission: z.string().min(2),
-  price: z.coerce.number(),
-  description: z.string().min(0)
+  price: z.coerce.number().min(1),
+  description: z.string().min(0),
+  contactNumber: z.string().refine(value => /^\+(?:[0-9]●?){6,14}[0-9]$/.test(value), {
+    message: "Please enter a valid phone number",
+  }),
 })
 
-export function DialogCarPublicationForm(
-  { publication, models, brands }: { publication?: CarPublication, models: CarModel[], brands: Brand[] },
-) {
+export function DialogCarPublicationForm({
+  publication,
+  models,
+  brands,
+}: {
+  publication?: CarPublication
+  models: CarModel[]
+  brands: Brand[]
+}) {
   const router = useRouter()
   let [open, setOpen] = useState(false)
   const { toast } = useToast()
-  const [filteredModels, setFilteredModels] = useState<CarModel[]>([]);
-  const currentYear = new Date().getFullYear();
-  const years: Number[] = [];
+  const [filteredModels, setFilteredModels] = useState<CarModel[]>([])
+  const currentYear = new Date().getFullYear()
+  const years: Number[] = []
   for (let year = currentYear; year >= 1950; year--) {
-    years.push(year);
+    years.push(year)
   }
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -69,7 +83,8 @@ export function DialogCarPublicationForm(
       mileage: 0,
       price: 1,
       transmission: "",
-      description: ""
+      description: "",
+      contactNumber: "",
     },
   })
 
@@ -84,30 +99,32 @@ export function DialogCarPublicationForm(
         mileage: publication.mileage,
         transmission: publication.transmission,
         price: publication.price,
-        description: publication.description
+        description: publication.description,
+        contactNumber: publication.contactNumber,
       })
     }
   }, [form, open, publication])
 
   const handleBrandChange = (selectedBrandId: Number) => {
-    const brand = brands.find((brand) => brand.id === selectedBrandId);
+    const brand = brands.find((brand) => brand.id === selectedBrandId)
     if (brand) {
-      const brandModels = models.filter((model) => model.brandId === brand.id);
-      setFilteredModels(brandModels);
+      const brandModels = models.filter((model) => model.brandId === brand.id)
+      setFilteredModels(brandModels)
     } else {
-      setFilteredModels([]);
+      setFilteredModels([])
     }
-  };
-
+  }
 
   async function onSubmit(formValues: z.infer<typeof formSchema>) {
-    const { brandId , ...newFormValues } = formValues; //remove brandId
-    console.log('Submitting form', newFormValues);
+    const { brandId, ...newFormValues } = formValues //remove brandId
+    console.log("Submitting form", newFormValues)
     try {
       let response = new Response()
       if (publication) {
         response = await fetch(
-          process.env.NEXT_PUBLIC_API_BASE_URL + "/api/carPublications/" + publication.id,
+          process.env.NEXT_PUBLIC_API_BASE_URL +
+            "/api/carPublications/" +
+            publication.id,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -155,7 +172,7 @@ export function DialogCarPublicationForm(
         <DialogTrigger asChild>
           <Button>{publication ? `Edit` : "Add New"}</Button>
         </DialogTrigger>
-        <DialogContent className="max-h-screen overflow-y-scroll" >
+        <DialogContent className="max-h-screen overflow-y-scroll">
           <DialogHeader>
             <DialogTitle>
               {publication ? `Edit ${publication}` : "Add New"}
@@ -170,23 +187,27 @@ export function DialogCarPublicationForm(
                   <FormLabel>Brand</FormLabel>
                   <Select //onValueChange={field.onChange}
                     onValueChange={(id) => {
-                      field.onChange(Number(id));
-                      handleBrandChange(Number(id));
-                    }}>
+                      field.onChange(Number(id))
+                      handleBrandChange(Number(id))
+                    }}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select car Brand." />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="max-h-[10rem]">
-                    {brands
-                      .slice() // Create a shallow copy of the original array
-                      .sort((a, b) => a.name.localeCompare(b.name)) // Sort the copy alphabetically by brand name
-                      .map((brand) => (
-                        <SelectItem key={brand.name} value={brand.id.toString()}>
-                          {brand.name}
-                        </SelectItem>
-                      ))}
+                      {brands
+                        .slice() // Create a shallow copy of the original array
+                        .sort((a, b) => a.name.localeCompare(b.name)) // Sort the copy alphabetically by brand name
+                        .map((brand) => (
+                          <SelectItem
+                            key={brand.name}
+                            value={brand.id.toString()}
+                          >
+                            {brand.name}
+                          </SelectItem>
+                        ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -199,17 +220,25 @@ export function DialogCarPublicationForm(
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Model</FormLabel>
-                  <Select onValueChange={(value) => field.onChange(Number(value))}>
+                  <Select
+                    onValueChange={(value) => field.onChange(Number(value))}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select car model." />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="max-h-[10rem] overflow-y-scroll">
-                      {filteredModels.map((model)  => {
-                          return <SelectItem key={model.name} value={model.id.toString()}>{model.name}</SelectItem>
-                          })
-                        }
+                      {filteredModels.map((model) => {
+                        return (
+                          <SelectItem
+                            key={model.name}
+                            value={model.id.toString()}
+                          >
+                            {model.name}
+                          </SelectItem>
+                        )
+                      })}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -222,17 +251,25 @@ export function DialogCarPublicationForm(
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Year</FormLabel>
-                  <Select onValueChange={(value) => field.onChange(Number(value))} >
+                  <Select
+                    onValueChange={(value) => field.onChange(Number(value))}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select car year." />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="max-h-[10rem]">
-                      {years.map((year)  => {
-                          return <SelectItem key={year.toString()} value={year.toString()}>{year.toString()}</SelectItem>
-                          })
-                        }
+                      {years.map((year) => {
+                        return (
+                          <SelectItem
+                            key={year.toString()}
+                            value={year.toString()}
+                          >
+                            {year.toString()}
+                          </SelectItem>
+                        )
+                      })}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -246,20 +283,21 @@ export function DialogCarPublicationForm(
                 <FormItem>
                   <FormLabel>Image</FormLabel>
                   <FormControl>
-                    <ImageInputCloudinary onChange={field.onChange}/>
+                    <ImageInputCloudinary onChange={field.onChange} />
                   </FormControl>
                   <>
-                  {field.value ? (
-                    <Image
-                      src={field.value}
-                      alt={field.value}
-                      width={100}
-                      height={100}
-                    />
-                    
-                  ) : (<></>)}
+                    {field.value ? (
+                      <Image
+                        src={field.value}
+                        alt={field.value}
+                        width={100}
+                        height={100}
+                      />
+                    ) : (
+                      <></>
+                    )}
                   </>
-                  <FormMessage/>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -270,7 +308,7 @@ export function DialogCarPublicationForm(
                 <FormItem>
                   <FormLabel>Mileage</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="Mileage" {...field}/>
+                    <Input type="number" placeholder="Mileage" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -283,7 +321,7 @@ export function DialogCarPublicationForm(
                 <FormItem>
                   <FormLabel>Price</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="Price" {...field}/>
+                    <Input type="number" placeholder="Price" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -295,9 +333,17 @@ export function DialogCarPublicationForm(
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Transmission</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Transmission" {...field} />
-                  </FormControl>
+                  <Select onValueChange={(value) => field.onChange(value)}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Transmission..." />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="max-h-[10rem] overflow-y-scroll">
+                      <SelectItem value="Manual">Manual</SelectItem>
+                      <SelectItem value="Automatic">Automatic</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
@@ -309,8 +355,24 @@ export function DialogCarPublicationForm(
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Input placeholder="Description" {...field} />
+                    <Textarea placeholder="Description" {...field} />
                   </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="contactNumber"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Contact Number</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Contact number..." {...field} />
+                  </FormControl>
+
                   <FormMessage />
                 </FormItem>
               )}

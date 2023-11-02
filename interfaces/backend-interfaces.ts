@@ -53,6 +53,7 @@ price: number;
 transmission: string;
 imageUrl: string;
 description: string;
+contactNumber: string;
 }
 
 export interface PlanePublication {
@@ -63,6 +64,7 @@ planeModelId: number;
 mileage: number;
 fuelCapacity: number;
 imageUrl: string;
+contactNumber: string;
 }
 
 export interface BoatPublication {
@@ -73,4 +75,5 @@ boatModelId: number;
 mileage: number;
 capacity: number;
 imageUrl: string;
+contactNumber: string;
 }
