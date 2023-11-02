@@ -28,6 +28,13 @@ export function DialogCarModelDetail({ model }: { model: CarModel }) {
             Number of doors: {model.numberOfDoors}
           </DialogDescription>
         </DialogHeader>
+          <DialogFooter className="sm:justify-start">
+            <DialogClose asChild>
+              <Button type="button" variant="secondary">
+                Close
+              </Button>
+            </DialogClose>
+          </DialogFooter>
       </DialogContent>
     </Dialog>
   );

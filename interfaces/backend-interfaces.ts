@@ -45,17 +45,20 @@ boatPublications: BoatPublication[];
 
 export interface CarPublication {
 id: number;
-car: CarModel;
+carModel: CarModel;
+year: number;
 carModelId: number;
 mileage: number;
 price: number;
 transmission: string;
 imageUrl: string;
+description: string;
 }
 
 export interface PlanePublication {
 id: number;
-plane: PlaneModel;
+planeModel: PlaneModel;
+year: number;
 planeModelId: number;
 mileage: number;
 fuelCapacity: number;
@@ -64,7 +67,8 @@ imageUrl: string;
 
 export interface BoatPublication {
 id: number;
-boat: BoatModel;
+boatModel: BoatModel;
+year: number;
 boatModelId: number;
 mileage: number;
 capacity: number;

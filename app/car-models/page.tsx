@@ -14,8 +14,6 @@ import { DialogCarModelForm } from "./dialog-form";
   export default async function Page() {
     const models = await getCarModels();
     const brands = await getBrands();
-
-
     return (
       <div>
         <div className="mt-10 flex justify-center">

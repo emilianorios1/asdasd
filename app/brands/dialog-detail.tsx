@@ -29,6 +29,13 @@ export function DialogBrandDetail({ brand }: { brand: Brand }) {
             Contact Number: {brand.contactNumber}
           </DialogDescription>
         </DialogHeader>
+        <DialogFooter className="sm:justify-start">
+            <DialogClose asChild>
+              <Button type="button" variant="secondary">
+                Close
+              </Button>
+            </DialogClose>
+          </DialogFooter>
       </DialogContent>
     </Dialog>
   );

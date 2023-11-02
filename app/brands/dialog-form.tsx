@@ -60,7 +60,7 @@ export function DialogBrandForm({ brand }: { brand?: Brand }) {
   });
 
   useEffect(() => {
-    if (open) {
+    if (open && brand) {
       // Reset the form when the dialog opens
       form.reset({ 
         name: brand?.name || "", 
@@ -68,7 +68,7 @@ export function DialogBrandForm({ brand }: { brand?: Brand }) {
         contactNumber: brand?.contactNumber || "" 
     });
     }
-  }, [open, form, brand?.name, brand?.websiteUrl, brand?.contactNumber]);
+  }, [open, form, brand]);
 
   async function onSubmit(form_values: z.infer<typeof formSchema>) {
     console.log(form_values)
@@ -165,7 +165,14 @@ export function DialogBrandForm({ brand }: { brand?: Brand }) {
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <DialogFooter className="sm:justify-start">
+              <Button type="submit">Submit</Button>
+              <DialogClose asChild>
+                <Button type="button" variant="secondary">
+                  Close
+                </Button>
+              </DialogClose>
+            </DialogFooter>
           </form>
         </DialogContent>
       </Dialog>

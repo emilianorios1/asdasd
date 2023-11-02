@@ -1,4 +1,4 @@
-import { Brand } from "@/interfaces/brand"
+import { Brand } from "@/interfaces/backend-interfaces"
 
 export async function getBrands(): Promise<Brand[]> {
   const res = await fetch(

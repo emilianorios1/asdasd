@@ -9,24 +9,16 @@ export const siteConfig = {
       href: "/",
     },
     {
-      title: "Categories",
-      href: "/categories",
-    },
-    {
-      title: "Publications",
-      href: "/publish",
-    },
-    {
       title: "Brands",
       href: "/brands",
     },
     {
-      title: "Models",
-      href: "/models",
+      title: "Car Models",
+      href: "/car-models",
     },
     {
-      title: "My Cars",
-      href: "/my-cars",
+      title: "Car Publications",
+      href: "/car-publications",
     },
   ],
   links: {

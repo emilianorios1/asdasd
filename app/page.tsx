@@ -2,7 +2,6 @@ import Link from "next/link"
 
 import { siteConfig } from "@/config/site"
 import { buttonVariants } from "@/components/ui/button"
-import Publicaciones from "./publicaciones"
 
 
 export default function IndexPage() {
@@ -37,9 +36,6 @@ export default function IndexPage() {
           GitHub
         </Link>
         
-      </div>
-      <div>
-        <Publicaciones/>
       </div>
     </section>
   )

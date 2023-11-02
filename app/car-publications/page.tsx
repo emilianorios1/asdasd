@@ -8,22 +8,25 @@ import {
   } from "@/components/ui/card"
   import { getCarModels } from "@/services/carModels"
 import { getBrands } from "@/services/brands";
-import { ModelsDataTable } from "./data-table";
-import { DialogCarModelForm } from "./dialog-form";
+import { DialogCarPublicationForm } from "./dialog-form";
+import { getCarPublications } from "@/services/carPublications";
+import { CarPublicationsDataTable } from "./data-table";
   
   export default async function Page() {
-
+    const models = await getCarModels()
+    const brands = await getBrands()
+    const publications = await getCarPublications()
 
     return (
       <div>
         <div className="mt-10 flex justify-center">
           <Card>
             <CardHeader className="items-center">
-              <CardTitle>Car Models</CardTitle>
-              <DialogCarModelForm brands={brands}/>
+              <CardTitle>Car Publications</CardTitle>
+              <DialogCarPublicationForm models={models} brands={brands}/>
             </CardHeader>
             <CardContent className="flex justify-center ">
-              <ModelsDataTable models={models} brands={brands} />
+              <CarPublicationsDataTable publications={publications} models={models} brands={brands} />
             </CardContent>
           </Card>
         </div>

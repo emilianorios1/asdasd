@@ -10,16 +10,17 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/use-toast";
-import { Model } from "@/interfaces/model"; // Asegúrate de importar la interfaz correcta
+import { CarPublication } from "@/interfaces/backend-interfaces"; 
+import { CarModel } from "@/interfaces/backend-interfaces"; // Asegúrate de importar la interfaz correcta
 import { useRouter } from "next/navigation";
 
-export function DialogmodelDelete({ model }: { model: Model }) {
+export function DialogCarPublicationDelete({ publication }: { publication: CarPublication }) {
   const router = useRouter();
 
   const handleOnClick = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/models/${model.id}`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/carPublications/${publication.id}`,
         {
           method: "DELETE",
         }
@@ -41,7 +42,7 @@ export function DialogmodelDelete({ model }: { model: Model }) {
       }
     } catch (error) {
       // Manejar errores inesperados o mostrar un mensaje de error al usuario
-      console.error("Error deleting model:", error);
+      console.error("Error deleting publication:", error);
       toast({
         description: "Unexpected error",
         title: "Error",
@@ -59,8 +60,7 @@ export function DialogmodelDelete({ model }: { model: Model }) {
         <DialogHeader>
           <DialogTitle>Delete</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete model `{model.name}`?<br/><br/>
-            This action will delete associated data, please be cautious!
+            Are you sure you want to delete the publication `{publication.id} - {publication.carModel.name}`?
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="sm:justify-start">

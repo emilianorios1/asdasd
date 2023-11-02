@@ -48,7 +48,6 @@ const formSchema = z.object({
   brandId: z.number(),
   engineSize: z.coerce.number(),
   numberOfDoors: z.coerce.number().min(3).max(5),
-  imageUrl: z.string()
 })
 
 export function DialogCarModelForm(
@@ -60,20 +59,24 @@ export function DialogCarModelForm(
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      engineSize: 0,
+      numberOfDoors: 5,
+    },
   })
 
   useEffect(() => {
-    if (open) {
+    if (open && model) {
       // Reset the form when the dialog opens
       form.reset({
         name: model?.name || "",
         brandId: model?.brandId || NaN,
         engineSize: model?.engineSize || NaN,
         numberOfDoors: model?.numberOfDoors || NaN,
-        imageUrl: model?.imageUrl || ""
       })
     }
-  }, [open, form, model?.name, model?.brandId, model?.engineSize, model?.numberOfDoors, model?.imageUrl])
+  }, [open, form, model])
 
   async function onSubmit(form_values: z.infer<typeof formSchema>) {
     console.log(form_values)
@@ -146,7 +149,7 @@ export function DialogCarModelForm(
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Brand</FormLabel>
-                  <Select onValueChange={(value) => field.onChange(Number(value))} defaultValue={field.value.toString()}>
+                  <Select onValueChange={(value) => field.onChange(Number(value))} >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue  placeholder="Select model brand." />
@@ -208,29 +211,14 @@ export function DialogCarModelForm(
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="imageUrl"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Image</FormLabel>
-                  <FormControl>
-                    <ImageInputCloudinary onChange={field.onChange}/>
-                  </FormControl>
-                  <p className="text-sm text-muted-foreground">
-                  {field.value}
-                  </p>
-                  <Image 
-                  src={field.value} 
-                  alt={field.value}
-                  width={100}
-                  height={100}/>
-                  <Label></Label>
-                  <FormMessage/>
-                </FormItem>
-              )}
-            />
-            <Button type="submit">Submit</Button>
+            <DialogFooter className="sm:justify-start">
+              <Button type="submit">Submit</Button>
+              <DialogClose asChild>
+                <Button type="button" variant="secondary">
+                  Close
+                </Button>
+              </DialogClose>
+            </DialogFooter>
           </form>
         </DialogContent>
       </Dialog>
