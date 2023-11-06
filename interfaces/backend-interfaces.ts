@@ -65,6 +65,9 @@ mileage: number;
 fuelCapacity: number;
 imageUrl: string;
 contactNumber: string;
+description: string;
+flighthours: number ;
+
 }
 
 export interface BoatPublication {
