@@ -36,10 +36,8 @@ id: number;
 name: string;
 brand: Brand;
 brandId: number;
-year: number;
-lengthInFeet: number;
-beamInFeet: number;
-draftInFeet: number;
+engineSize: number;
+isOutboard: string;
 boatPublications: BoatPublication[];
 }
 
@@ -75,8 +73,12 @@ id: number;
 boatModel: BoatModel;
 year: number;
 boatModelId: number;
-mileage: number;
+price: number;
 capacity: number;
+boatType: string;
+haveTrailer: string;
+maxWeight: number;
 imageUrl: string;
+description: string;
 contactNumber: string;
 }

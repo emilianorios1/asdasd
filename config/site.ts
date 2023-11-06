@@ -21,6 +21,14 @@ export const siteConfig = {
       href: "/car-publications",
     },
     {
+      title: "Boat Models",
+      href: "/boat-models",
+    },
+    {
+      title: "Boat Publications",
+      href: "/boat-publications",
+    },
+    {
       title: "Plane Models",
       href: "/plane-models",
     },
