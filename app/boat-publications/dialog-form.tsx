@@ -48,7 +48,7 @@ const formSchema = z.object({
   brandId: z.number(),
   boatModelId: z.number(),
   imageUrl: z.string().min(2, "Upload an image"),
-  capacity: z.number().min(1),
+  capacity: z.coerce.number().min(1),
   haveTrailer: z.string().min(2, "Yes or No?"),
   year: z.number(),
   boatType: z.string().min(2),
