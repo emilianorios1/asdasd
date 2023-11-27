@@ -9,7 +9,7 @@ export const siteConfig = {
       href: "/",
     },
     {
-      title: "Brands",
+      title: "All Brands",
       href: "/brands",
     },
     {
@@ -43,3 +43,5 @@ export const siteConfig = {
     docs: "https://ui.shadcn.com",
   },
 }
+
+
