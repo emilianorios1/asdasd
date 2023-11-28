@@ -1,5 +1,6 @@
 export type Components = typeof components
 
+
 export const components: { title: string; href: string; description: string }[] = [
   {
     title: "Home",
