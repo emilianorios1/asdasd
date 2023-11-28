@@ -118,7 +118,7 @@ export function DialogBrandForm({ brand }: { brand?: Brand }) {
     <Form {...form}>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button >{brand ? `Edit` : 'Add New'}</Button>
+          <Button className="min-h-[100px]  max-w-[340px] text-4xl">{brand ? `Edit` : 'Add New'}</Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>

@@ -18,7 +18,7 @@ export function DialogBrandDetail({ brand }: { brand: Brand }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="secondary">View Detail</Button>
+        <Button className="min-h-[100px]  max-w-[340px] text-4xl" variant="secondary">View Detail</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>

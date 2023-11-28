@@ -53,7 +53,7 @@ export function DialogBrandDelete({ brand }: { brand: Brand }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="destructive">Delete</Button>
+        <Button className="min-h-[100px]  max-w-[340px] text-4xl" variant="destructive">Delete</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>

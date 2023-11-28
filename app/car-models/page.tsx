@@ -16,15 +16,18 @@ import { DialogCarModelForm } from "./dialog-form";
     const brands = await getBrands();
     return (
       <div>
-        <div className="mt-10 flex justify-center">
+        <div className=" mt-10 flex items-center justify-center">
           <Card>
+
             <CardHeader className="items-center">
               <CardTitle>Car Models</CardTitle>
               <DialogCarModelForm brands={brands}/>
             </CardHeader>
+
             <CardContent className="flex justify-center ">
               <CarModelsDataTable models={models} brands={brands} />
             </CardContent>
+
           </Card>
         </div>
       </div>

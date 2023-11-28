@@ -51,7 +51,7 @@ export function DataTable<TData, TValue>({
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead className="text-4xl sm:text-2xl md:text-base" key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -68,6 +68,7 @@ export function DataTable<TData, TValue>({
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
+                className="text-4xl sm:text-2xl md:text-base"
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
               >

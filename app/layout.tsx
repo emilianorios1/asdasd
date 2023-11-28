@@ -33,7 +33,7 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <>
-      <html lang="en" suppressHydrationWarning>
+      <html lang="en" className="min-w-[900px]" suppressHydrationWarning>
         <head />
         <body
           className={cn(

@@ -23,8 +23,8 @@ export function BrandsDataTable({ brands }: { brands: Brand[] }){
       cell: ({ row }) => {
         const brand = row.original
         return (
-          <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-            <DialogBrandForm brand={brand} />
+          <div className="flex min-w-[550px] pl-32 flex-col-reverse gap-5 sm:flex-row sm:justify-end sm:space-x-2 ">
+            <DialogBrandForm  brand={brand} />
             <DialogBrandDelete brand={brand} />
             <DialogBrandDetail brand={brand} />
           </div>
