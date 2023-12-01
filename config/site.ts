@@ -42,6 +42,20 @@ export const siteConfig = {
     github: "https://github.com/shadcn/ui",
     docs: "https://ui.shadcn.com",
   },
+  carnav:[
+    {
+      title: "Car Models",
+      href: "/car-models",    
+      description:
+        "List of vehicle models",
+    },
+    {
+      title: "Car Publications",
+      href: "/car-publications",    
+      description:
+        "List of publicated vehicles",
+    },
+  ],
 }
 
 
