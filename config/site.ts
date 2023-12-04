@@ -4,10 +4,12 @@ export const siteConfig = {
   name: "Marketplace TP",
   description: "Desarrollo de Software - UTN FRRO",
   mainNav: [
+    /*
     {
       title: "Home",
       href: "/",
     },
+    */
     {
       title: "All Brands",
       href: "/brands",
