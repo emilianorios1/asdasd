@@ -1,21 +1,18 @@
 'use client';
 
-import { useCallback, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import {
-  CarModel,
-  CarPublication,
-  Brand,
-} from '@/interfaces/backend-interfaces';
-import { ColumnDef } from '@tanstack/react-table';
-import { useToggle } from 'react-use';
-import { Button } from '@/components/ui/button';
-import { DataTable } from '@/components/ui/data-table';
-import DeleteModal from '@/components/delete-modal';
-import { toast } from '@/components/ui/use-toast';
+import {useCallback, useState} from 'react';
+import {useRouter} from 'next/navigation';
+import {Brand, CarModel, CarPublication} from '@/interfaces/backend-interfaces';
+import {ColumnDef} from '@tanstack/react-table';
+import {useToggle} from 'react-use';
 
-import { DialogCarPublicationDetail } from './dialog-detail';
-import { DialogCarPublicationForm } from './dialog-form';
+import {Button} from '@/components/ui/button';
+import {DataTable} from '@/components/ui/data-table';
+import {toast} from '@/components/ui/use-toast';
+import DeleteModal from '@/components/delete-modal';
+
+import {DialogCarPublicationDetail} from './dialog-detail';
+import {DialogCarPublicationForm} from './dialog-form';
 
 export const CarPublicationsDataTable = ({
   publications,
@@ -26,7 +23,7 @@ export const CarPublicationsDataTable = ({
   models: CarModel[];
   brands: Brand[];
 }) => {
- const columns: ColumnDef<CarPublication>[] = [
+  const columns: ColumnDef<CarPublication>[] = [
     {
       accessorKey: 'id',
       header: 'ID',
@@ -50,7 +47,7 @@ export const CarPublicationsDataTable = ({
     {
       id: 'actions',
       header: 'Actions',
-      cell: ({ row }) => {
+      cell: ({row}) => {
         const publication = row.original;
         return (
           <div className="flex items-center justify-center space-x-3">

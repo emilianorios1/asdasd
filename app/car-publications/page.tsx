@@ -11,20 +11,19 @@ export default async function Page() {
   const publications = await getCarPublications();
 
   return (
-    <div  className="container mt-10 flex flex-col justify-center space-y-6 text-center">
-    <div className="flex flex-row items-center justify-between">
-      <h1 className="text-4xl font-bold sm:text-6xl"> Car Publications</h1>
-    
-            <DialogCarPublicationForm models={models} brands={brands} />
-              </div>
+    <div className="container mt-10 flex flex-col justify-center space-y-6 text-center">
+      <div className="flex flex-row items-center justify-between">
+        <h1 className="text-4xl font-bold sm:text-6xl"> Car Publications</h1>
 
-              <div className="flex justify-center">
-            <CarPublicationsDataTable
-              publications={publications}
-              models={models}
-              brands={brands}
-            />
+        <DialogCarPublicationForm models={models} brands={brands} />
+      </div>
 
+      <div className="flex justify-center">
+        <CarPublicationsDataTable
+          publications={publications}
+          models={models}
+          brands={brands}
+        />
       </div>
     </div>
   );
