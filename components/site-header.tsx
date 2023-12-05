@@ -6,7 +6,7 @@ import { Icons } from "@/components/icons"
 import { MainNav } from "@/components/main-nav2"
 import { ThemeToggle } from "@/components/theme-toggle"
 
-import { SheetDemo } from "@/components/small-main-nav"
+import { SmallNav } from "@/components/small-main-nav"
 
 
 export function SiteHeader() {
@@ -15,7 +15,7 @@ export function SiteHeader() {
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
 
         <div className="visible lg:invisible">
-          <SheetDemo items={siteConfig.mainNav} />
+          <SmallNav items={siteConfig.mainNav} />
         </div>
         <div className="invisible lg:visible">
           <MainNav />

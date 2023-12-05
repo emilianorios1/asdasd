@@ -22,7 +22,7 @@ interface MainNavProps {
     items?: NavItem[]
   }
 
-export function SheetDemo({ items }: MainNavProps) {
+export function SmallNav({ items }: MainNavProps) {
 
   return (
     <Sheet>
