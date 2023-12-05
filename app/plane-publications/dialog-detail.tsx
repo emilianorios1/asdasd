@@ -1,4 +1,7 @@
-import { Button } from "@/components/ui/button";
+import Image from 'next/image';
+import {PlanePublication} from '@/interfaces/backend-interfaces';
+
+import {Button} from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -8,12 +11,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { PlanePublication } from "@/interfaces/backend-interfaces";
-import Image from "next/image"
+} from '@/components/ui/dialog';
 
-export function DialogPlanePublicationDetail({ publication }: { publication: PlanePublication }) {
-
+export const DialogPlanePublicationDetail = ({
+  publication,
+}: {
+  publication: PlanePublication;
+}) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -23,29 +27,36 @@ export function DialogPlanePublicationDetail({ publication }: { publication: Pla
         <DialogHeader>
           <DialogTitle>{publication.id}</DialogTitle>
           <DialogDescription>
-            Brand: {publication.planeModel.brand.name}<br/>
-            Model: {publication.planeModel.name}<br/>
-            Image: <br/> <br/> 
+            Brand: {publication.planeModel.brand.name}
+            <br />
+            Model: {publication.planeModel.name}
+            <br />
+            Image: <br /> <br />
             <Image
               src={publication.imageUrl}
               alt={publication.imageUrl}
               width={1000}
               height={1000}
-            /><br/>
-            Year: {publication.year}<br/>
-            FuelCapacity: {publication.fuelCapacity}<br/>
-            Description: {publication.description}<br/>
-            Flighthours: {publication.flighthours}<br/>
+            />
+            <br />
+            Year: {publication.year}
+            <br />
+            FuelCapacity: {publication.fuelCapacity}
+            <br />
+            Description: {publication.description}
+            <br />
+            Flighthours: {publication.flighthours}
+            <br />
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="sm:justify-start">
-            <DialogClose asChild>
-              <Button type="button" variant="secondary">
-                Close
-              </Button>
-            </DialogClose>
-          </DialogFooter>
+          <DialogClose asChild>
+            <Button type="button" variant="secondary">
+              Close
+            </Button>
+          </DialogClose>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
-}
+};

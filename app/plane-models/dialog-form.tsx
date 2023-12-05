@@ -1,14 +1,13 @@
-"use client"
+'use client';
 
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
-import { Brand } from "@/interfaces/backend-interfaces"
-import { PlaneModel } from "@/interfaces/backend-interfaces"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
-import { Button } from "@/components/ui/button"
-// Asegúrate de importar la interfaz correcta
+import {useEffect, useState} from 'react';
+import {useRouter} from 'next/navigation';
+import {Brand, PlaneModel} from '@/interfaces/backend-interfaces';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {useForm} from 'react-hook-form';
+import * as z from 'zod';
+
+import {Button} from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -18,111 +17,111 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from '@/components/ui/form';
+import {Input} from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { useToast } from "@/components/ui/use-toast"
-import ImageInputCloudinary from "@/components/ui/image-input-cloudinary"
-import { Label } from "@/components/ui/label"
-import Image from "next/image"
+} from '@/components/ui/select';
+import {useToast} from '@/components/ui/use-toast';
 
 const formSchema = z.object({
   name: z.string().min(2, {
-    message: "model name must be at least 2 characters.",
+    message: 'model name must be at least 2 characters.',
   }),
   brandId: z.number(),
   wingspan: z.coerce.number(),
   maxAltitude: z.coerce.number().min(0).max(12000),
-})
+});
 
-export function DialogPlaneModelForm(
-  { model,brands }: { model?: PlaneModel, brands: Brand[] },
-) {
-  const router = useRouter()
-  let [open, setOpen] = useState(false)
-  const { toast } = useToast()
+export const DialogPlaneModelForm = ({
+  model,
+  brands,
+}: {
+  model?: PlaneModel;
+  brands: Brand[];
+}) => {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const {toast} = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      name: '',
       wingspan: 0,
       maxAltitude: 10000,
     },
-  })
+  });
 
   useEffect(() => {
     if (open && model) {
       // Reset the form when the dialog opens
       form.reset({
-        name: model?.name || "",
+        name: model?.name || '',
         brandId: model?.brandId || NaN,
         wingspan: model?.wingspan || NaN,
         maxAltitude: model?.maxAltitude || NaN,
-      })
+      });
     }
-  }, [open, form, model])
+  }, [open, form, model]);
 
   async function onSubmit(form_values: z.infer<typeof formSchema>) {
-    console.log(form_values)
+    console.log(form_values);
     try {
-      let response = new Response()
+      let response = new Response();
       if (model) {
         response = await fetch(
-          process.env.NEXT_PUBLIC_API_BASE_URL + "/api/planeModels/" + model.id,
+          process.env.NEXT_PUBLIC_API_BASE_URL + '/api/planeModels/' + model.id,
           {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form_values),
           }
-        )
+        );
       } else {
         response = await fetch(
-          process.env.NEXT_PUBLIC_API_BASE_URL + "/api/planeModels",
+          process.env.NEXT_PUBLIC_API_BASE_URL + '/api/planeModels',
           {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form_values),
           }
-        )
+        );
       }
 
       if (!response.ok) {
-        const responseData = await response.json()
+        const responseData = await response.json();
         toast({
           description: responseData.error,
-          title: "Error",
-          variant: "destructive",
-        })
+          title: 'Error',
+          variant: 'destructive',
+        });
       } else {
-        setOpen(false)
-        router.refresh()
+        setOpen(false);
+        router.refresh();
         toast({
-          title: "Success",
-        })
+          title: 'Success',
+        });
       }
     } catch (error) {
-      console.error("Form submission error:", error)
+      console.error('Form submission error:', error);
       toast({
-        description: "Unexpected error",
-        title: "Error",
-        variant: "destructive",
-      })
+        description: 'Unexpected error',
+        title: 'Error',
+        variant: 'destructive',
+      });
     }
   }
 
@@ -130,29 +129,31 @@ export function DialogPlaneModelForm(
     <Form {...form}>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button>{model ? `Edit` : "Add New"}</Button>
+          <Button>{model ? `Edit` : 'Add New'}</Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              {model ? `Edit ${model.name}` : "Add New"}
+              {model ? `Edit ${model.name}` : 'Add New'}
             </DialogTitle>
             <DialogDescription>
-              You are about to {model ? "edit" : "add"}{" "}
-              {model ? model.name : "a new model"}
+              You are about to {model ? 'edit' : 'add'}{' '}
+              {model ? model.name : 'a new model'}
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-             <FormField
+            <FormField
               control={form.control}
               name="brandId"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Brand</FormLabel>
-                  <Select onValueChange={(value) => field.onChange(Number(value))} >
+                  <Select
+                    onValueChange={(value) => field.onChange(Number(value))}
+                  >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue  placeholder="Select model brand." />
+                        <SelectValue placeholder="Select model brand." />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="max-h-[10rem]">
@@ -164,7 +165,7 @@ export function DialogPlaneModelForm(
                           >
                             {brand.name}
                           </SelectItem>
-                        )
+                        );
                       })}
                     </SelectContent>
                   </Select>
@@ -175,7 +176,7 @@ export function DialogPlaneModelForm(
             <FormField
               control={form.control}
               name="name"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Model Name</FormLabel>
                   <FormControl>
@@ -188,11 +189,11 @@ export function DialogPlaneModelForm(
             <FormField
               control={form.control}
               name="wingspan"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Wingspan</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="wingspan" {...field}/>
+                    <Input type="number" placeholder="wingspan" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -201,13 +202,13 @@ export function DialogPlaneModelForm(
             <FormField
               control={form.control}
               name="maxAltitude"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Max Altitude</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="maxAltitude" {...field}/>
+                    <Input type="number" placeholder="maxAltitude" {...field} />
                   </FormControl>
-                  <FormMessage/>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -223,5 +224,5 @@ export function DialogPlaneModelForm(
         </DialogContent>
       </Dialog>
     </Form>
-  )
-}
+  );
+};

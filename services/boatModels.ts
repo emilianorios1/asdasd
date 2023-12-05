@@ -1,9 +1,9 @@
-import { BoatModel } from "@/interfaces/backend-interfaces"
+import {BoatModel} from '@/interfaces/backend-interfaces';
 
 export async function getBoatModels(): Promise<BoatModel[]> {
   const res = await fetch(
-    process.env.NEXT_PUBLIC_API_BASE_URL + "/api/boatModels",
-    { cache: "no-store" }
+    process.env.NEXT_PUBLIC_API_BASE_URL + '/api/boatModels',
+    {cache: 'no-store'}
   );
   const data = await res.json();
   return data as BoatModel[];

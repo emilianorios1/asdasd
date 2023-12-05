@@ -1,36 +1,26 @@
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-  } from "@/components/ui/card"
-  import { getCarModels } from "@/services/carModels"
-import { getBrands } from "@/services/brands";
-import { CarModelsDataTable } from "./data-table";
-import { DialogCarModelForm } from "./dialog-form";
-  
-  export default async function Page() {
-    const models = await getCarModels();
-    const brands = await getBrands();
-    return (
-      <div>
-        <div className=" mt-10 flex items-center justify-center">
-          <Card>
+import {getBrands} from '@/services/brands';
+import {getCarModels} from '@/services/carModels';
 
-            <CardHeader className="items-center">
-              <CardTitle>Car Models</CardTitle>
-              <DialogCarModelForm brands={brands}/>
-            </CardHeader>
+import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
 
-            <CardContent className="flex justify-center ">
-              <CarModelsDataTable models={models} brands={brands} />
-            </CardContent>
+import {CarModelsDataTable} from './data-table';
+import {DialogCarModelForm} from './dialog-form';
 
-          </Card>
-        </div>
+export default async function Page() {
+  const models = await getCarModels();
+  const brands = await getBrands();
+  return (
+    <div  className="container mt-10 flex flex-col justify-center space-y-6 text-center">
+      <div className="flex flex-row items-center justify-between">
+        <h1 className="text-4xl font-bold sm:text-6xl">Car Models</h1>
+
+            <DialogCarModelForm brands={brands} />
+            </div>
+
+            <div className="flex justify-center">
+            <CarModelsDataTable models={models} brands={brands} />
+
       </div>
-    )
-  }
-  
+    </div>
+  );
+}

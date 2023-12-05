@@ -1,4 +1,6 @@
-import { Button } from "@/components/ui/button";
+import {PlaneModel} from '@/interfaces/backend-interfaces';
+
+import {Button} from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -8,11 +10,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { PlaneModel } from "@/interfaces/backend-interfaces";
+} from '@/components/ui/dialog';
 
-export function DialogPlaneModelDetail({ model }: { model: PlaneModel }) {
-
+export const DialogPlaneModelDetail = ({model}: {model: PlaneModel}) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -22,20 +22,23 @@ export function DialogPlaneModelDetail({ model }: { model: PlaneModel }) {
         <DialogHeader>
           <DialogTitle>{model.name}</DialogTitle>
           <DialogDescription>
-            Brand: {model.brand.name}<br/>
-            Name: {model.name}<br/>
-            Wingspan: {model.wingspan}<br/>
+            Brand: {model.brand.name}
+            <br />
+            Name: {model.name}
+            <br />
+            Wingspan: {model.wingspan}
+            <br />
             MaxAltitude: {model.maxAltitude}
           </DialogDescription>
         </DialogHeader>
-          <DialogFooter className="sm:justify-start">
-            <DialogClose asChild>
-              <Button type="button" variant="secondary">
-                Close
-              </Button>
-            </DialogClose>
-          </DialogFooter>
+        <DialogFooter className="sm:justify-start">
+          <DialogClose asChild>
+            <Button type="button" variant="secondary">
+              Close
+            </Button>
+          </DialogClose>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
-}
+};

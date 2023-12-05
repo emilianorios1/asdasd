@@ -1,36 +1,32 @@
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-  } from "@/components/ui/card"
-  import { getPlaneModels } from "@/services/planeModels"
-import { getBrands } from "@/services/brands";
-import { DialogPlanePublicationForm } from "./dialog-form";
-import { getPlanePublications } from "@/services/planePublications";
-import { PlanePublicationsDataTable } from "./data-table";
-  
-  export default async function Page() {
-    const models = await getPlaneModels()
-    const brands = await getBrands()
-    const publications = await getPlanePublications()
+import {getBrands} from '@/services/brands';
+import {getPlaneModels} from '@/services/planeModels';
+import {getPlanePublications} from '@/services/planePublications';
 
-    return (
-      <div>
-        <div className="mt-10 flex justify-center">
-          <Card>
-            <CardHeader className="items-center">
-              <CardTitle>Plane Publications</CardTitle>
-              <DialogPlanePublicationForm models={models} brands={brands}/>
-            </CardHeader>
-            <CardContent className="flex justify-center ">
-              <PlanePublicationsDataTable publications={publications} models={models} brands={brands} />
-            </CardContent>
-          </Card>
-        </div>
+
+import {PlanePublicationsDataTable} from './data-table';
+import {DialogPlanePublicationForm} from './dialog-form';
+
+export default async function Page() {
+  const models = await getPlaneModels();
+  const brands = await getBrands();
+  const publications = await getPlanePublications();
+
+  return (
+    <div  className="container mt-10 flex flex-col justify-center space-y-6 text-center">
+    <div className="flex flex-row items-center justify-between">
+      <h1 className="text-4xl font-bold sm:text-6xl"> Plane Publications</h1>
+    
+            <DialogPlanePublicationForm models={models} brands={brands} />
+              </div>
+
+              <div className="flex justify-center">
+            <PlanePublicationsDataTable
+              publications={publications}
+              models={models}
+              brands={brands}
+            />
+
       </div>
-    )
-  }
-  
+    </div>
+  );
+}

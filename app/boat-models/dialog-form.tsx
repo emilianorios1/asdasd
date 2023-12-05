@@ -1,14 +1,13 @@
-"use client"
+'use client';
 
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
-import { Brand } from "@/interfaces/backend-interfaces"
-import { BoatModel } from "@/interfaces/backend-interfaces"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
-import { Button } from "@/components/ui/button"
-// Asegúrate de importar la interfaz correcta
+import {useEffect, useState} from 'react';
+import {useRouter} from 'next/navigation';
+import {BoatModel, Brand} from '@/interfaces/backend-interfaces';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {useForm} from 'react-hook-form';
+import * as z from 'zod';
+
+import {Button} from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -18,113 +17,113 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from '@/components/ui/form';
+import {Input} from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { useToast } from "@/components/ui/use-toast"
-import ImageInputCloudinary from "@/components/ui/image-input-cloudinary"
-import { Label } from "@/components/ui/label"
-import Image from "next/image"
+} from '@/components/ui/select';
+import {useToast} from '@/components/ui/use-toast';
 
 const formSchema = z.object({
   name: z.string().min(2, {
-    message: "model name must be at least 2 characters.",
+    message: 'model name must be at least 2 characters.',
   }),
   brandId: z.number(),
   engineSize: z.coerce.number(),
   isOutboard: z.string().min(2, {
-    message: "Yes or No",
+    message: 'Yes or No',
   }),
-})
+});
 
-export function DialogBoatModelForm(
-  { model,brands }: { model?: BoatModel, brands: Brand[] },
-) {
-  const router = useRouter()
-  let [open, setOpen] = useState(false)
-  const { toast } = useToast()
+export const DialogBoatModelForm = ({
+  model,
+  brands,
+}: {
+  model?: BoatModel;
+  brands: Brand[];
+}) => {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const {toast} = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      name: '',
       engineSize: 0,
-      isOutboard: "",
+      isOutboard: '',
     },
-  })
+  });
 
   useEffect(() => {
     if (open && model) {
       // Reset the form when the dialog opens
       form.reset({
-        name: model?.name || "",
+        name: model?.name || '',
         brandId: model?.brandId || NaN,
         engineSize: model?.engineSize || NaN,
-        isOutboard: model?.isOutboard || "Yes",
-      })
+        isOutboard: model?.isOutboard || 'Yes',
+      });
     }
-  }, [open, form, model])
+  }, [open, form, model]);
 
   async function onSubmit(form_values: z.infer<typeof formSchema>) {
-    console.log(form_values)
+    console.log(form_values);
     try {
-      let response = new Response()
+      let response = new Response();
       if (model) {
         response = await fetch(
-          process.env.NEXT_PUBLIC_API_BASE_URL + "/api/boatModels/" + model.id,
+          process.env.NEXT_PUBLIC_API_BASE_URL + '/api/boatModels/' + model.id,
           {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form_values),
           }
-        )
+        );
       } else {
         response = await fetch(
-          process.env.NEXT_PUBLIC_API_BASE_URL + "/api/boatModels",
+          process.env.NEXT_PUBLIC_API_BASE_URL + '/api/boatModels',
           {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form_values),
           }
-        )
+        );
       }
 
       if (!response.ok) {
-        const responseData = await response.json()
+        const responseData = await response.json();
         toast({
           description: responseData.error,
-          title: "Error",
-          variant: "destructive",
-        })
+          title: 'Error',
+          variant: 'destructive',
+        });
       } else {
-        setOpen(false)
-        router.refresh()
+        setOpen(false);
+        router.refresh();
         toast({
-          title: "Success",
-        })
+          title: 'Success',
+        });
       }
     } catch (error) {
-      console.error("Form submission error:", error)
+      console.error('Form submission error:', error);
       toast({
-        description: "Unexpected error",
-        title: "Error",
-        variant: "destructive",
-      })
+        description: 'Unexpected error',
+        title: 'Error',
+        variant: 'destructive',
+      });
     }
   }
 
@@ -132,29 +131,31 @@ export function DialogBoatModelForm(
     <Form {...form}>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button>{model ? `Edit` : "Add New"}</Button>
+          <Button>{model ? `Edit` : 'Add New'}</Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              {model ? `Edit ${model.name}` : "Add New"}
+              {model ? `Edit ${model.name}` : 'Add New'}
             </DialogTitle>
             <DialogDescription>
-              You are about to {model ? "edit" : "add"}{" "}
-              {model ? model.name : "a new model"}
+              You are about to {model ? 'edit' : 'add'}{' '}
+              {model ? model.name : 'a new model'}
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-             <FormField
+            <FormField
               control={form.control}
               name="brandId"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Brand</FormLabel>
-                  <Select onValueChange={(value) => field.onChange(Number(value))} >
+                  <Select
+                    onValueChange={(value) => field.onChange(Number(value))}
+                  >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue  placeholder="Select model brand." />
+                        <SelectValue placeholder="Select model brand." />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="max-h-[10rem]">
@@ -166,7 +167,7 @@ export function DialogBoatModelForm(
                           >
                             {brand.name}
                           </SelectItem>
-                        )
+                        );
                       })}
                     </SelectContent>
                   </Select>
@@ -177,7 +178,7 @@ export function DialogBoatModelForm(
             <FormField
               control={form.control}
               name="name"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Model Name</FormLabel>
                   <FormControl>
@@ -190,11 +191,11 @@ export function DialogBoatModelForm(
             <FormField
               control={form.control}
               name="engineSize"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Engine Size</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="Engine Size" {...field}/>
+                    <Input type="number" placeholder="Engine Size" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -203,7 +204,7 @@ export function DialogBoatModelForm(
             <FormField
               control={form.control}
               name="isOutboard"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Is outboard</FormLabel>
                   <Select onValueChange={(value) => field.onChange(value)}>
@@ -233,5 +234,5 @@ export function DialogBoatModelForm(
         </DialogContent>
       </Dialog>
     </Form>
-  )
-}
+  );
+};

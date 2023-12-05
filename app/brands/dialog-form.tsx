@@ -1,22 +1,13 @@
-"use client"
+'use client';
 
-import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Brand } from "@/interfaces/backend-interfaces"; // Asegúrate de importar la interfaz correcta
+import {useEffect, useState} from 'react';
+import {useRouter} from 'next/navigation';
+import {Brand} from '@/interfaces/backend-interfaces';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {useForm} from 'react-hook-form';
+import * as z from 'zod';
+
+import {Button} from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -26,34 +17,51 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { useEffect, useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
+} from '@/components/ui/dialog';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import {Input} from '@/components/ui/input';
+import {useToast} from '@/components/ui/use-toast';
 
 const formSchema = z.object({
   name: z.string().min(2, {
     message: 'Brand name must be at least 2 characters.',
   }),
-  websiteUrl: z.string().refine((value) => {
-    try {
-      // Try creating a URL object with the value
-      new URL(value);
-      return true; // If successful, it's a valid URL
-    } catch {
-      return false; // If it fails, it's not a valid URL
+  websiteUrl: z.string().refine(
+    (value) => {
+      try {
+        // Try creating a URL object with the value
+        new URL(value);
+        return true; // If successful, it's a valid URL
+      } catch {
+        return false; // If it fails, it's not a valid URL
+      }
+    },
+    {
+      message:
+        'Invalid URL format for website. It should be something like https://example.com',
     }
-  }, { message: 'Invalid URL format for website. It should be something like https://example.com' }),
-  contactNumber: z.string().refine((value) => {
-    // Regular expression to validate a phone number (simple example)
-    const phoneRegex = /^\d{10}$/; // Modify this regex based on your phone number format
-    return phoneRegex.test(value);
-  }, { message: 'Invalid phone number format.' }),
+  ),
+  contactNumber: z.string().refine(
+    (value) => {
+      // Regular expression to validate a phone number (simple example)
+      const phoneRegex = /^\d{10}$/; // Modify this regex based on your phone number format
+      return phoneRegex.test(value);
+    },
+    {message: 'Invalid phone number format.'}
+  ),
 });
 
-export function DialogBrandForm({ brand }: { brand?: Brand }) {
+export const DialogBrandForm = ({brand}: {brand?: Brand}) => {
   const router = useRouter();
-  let [open, setOpen] = useState(false);
-  const { toast } = useToast();
+  const [open, setOpen] = useState(false);
+  const {toast} = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -62,55 +70,58 @@ export function DialogBrandForm({ brand }: { brand?: Brand }) {
   useEffect(() => {
     if (open && brand) {
       // Reset the form when the dialog opens
-      form.reset({ 
-        name: brand?.name || "", 
-        websiteUrl: brand?.websiteUrl || "", 
-        contactNumber: brand?.contactNumber || "" 
-    });
+      form.reset({
+        name: brand?.name || '',
+        websiteUrl: brand?.websiteUrl || '',
+        contactNumber: brand?.contactNumber || '',
+      });
     }
   }, [open, form, brand]);
 
   async function onSubmit(form_values: z.infer<typeof formSchema>) {
-    console.log(form_values)
+    console.log(form_values);
     try {
       let response = new Response();
       if (brand) {
         response = await fetch(
-          process.env.NEXT_PUBLIC_API_BASE_URL + "/api/brands/" + brand.id,
+          process.env.NEXT_PUBLIC_API_BASE_URL + '/api/brands/' + brand.id,
           {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form_values),
           }
         );
       } else {
-        response = await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/brands", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form_values),
-        });
+        response = await fetch(
+          process.env.NEXT_PUBLIC_API_BASE_URL + '/api/brands',
+          {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(form_values),
+          }
+        );
       }
 
       if (!response.ok) {
         const responseData = await response.json();
         toast({
           description: responseData.error,
-          title: "Error",
-          variant: "destructive",
+          title: 'Error',
+          variant: 'destructive',
         });
       } else {
         setOpen(false);
         router.refresh();
         toast({
-          title: "Success",
+          title: 'Success',
         });
       }
     } catch (error) {
-      console.error("Form submission error:", error);
+      console.error('Form submission error:', error);
       toast({
-        description: "Unexpected error",
-        title: "Error",
-        variant: "destructive",
+        description: 'Unexpected error',
+        title: 'Error',
+        variant: 'destructive',
       });
     }
   }
@@ -118,18 +129,25 @@ export function DialogBrandForm({ brand }: { brand?: Brand }) {
     <Form {...form}>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button className="min-h-[100px]  max-w-[340px] text-4xl">{brand ? `Edit` : 'Add New'}</Button>
+          <Button className="font-semibold">
+            {brand ? `Edit` : 'Add New'}
+          </Button>
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="w-11/12">
           <DialogHeader>
-            <DialogTitle>{brand ? `Edit ${brand.name}` : 'Add New'}</DialogTitle>
-            <DialogDescription>You are about to {brand ? 'edit' : 'add'} {brand ? brand.name : 'a new brand'}</DialogDescription>
+            <DialogTitle>
+              {brand ? `Edit ${brand.name}` : 'Add New'}
+            </DialogTitle>
+            <DialogDescription>
+              You are about to {brand ? 'edit' : 'add'}{' '}
+              {brand ? brand.name : 'a new brand'}
+            </DialogDescription>
           </DialogHeader>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
               name="name"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
@@ -142,7 +160,7 @@ export function DialogBrandForm({ brand }: { brand?: Brand }) {
             <FormField
               control={form.control}
               name="websiteUrl"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Website URL</FormLabel>
                   <FormControl>
@@ -155,7 +173,7 @@ export function DialogBrandForm({ brand }: { brand?: Brand }) {
             <FormField
               control={form.control}
               name="contactNumber"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Contact Number</FormLabel>
                   <FormControl>
@@ -165,17 +183,19 @@ export function DialogBrandForm({ brand }: { brand?: Brand }) {
                 </FormItem>
               )}
             />
-            <DialogFooter className="sm:justify-start">
-              <Button type="submit">Submit</Button>
+            <DialogFooter>
               <DialogClose asChild>
                 <Button type="button" variant="secondary">
                   Close
                 </Button>
               </DialogClose>
+              <Button className="mb-2 sm:mb-0" type="submit">
+                Submit
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>
       </Dialog>
     </Form>
   );
-}
+};

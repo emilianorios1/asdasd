@@ -1,9 +1,9 @@
-import { PlaneModel } from "@/interfaces/backend-interfaces"
+import {PlaneModel} from '@/interfaces/backend-interfaces';
 
 export async function getPlaneModels(): Promise<PlaneModel[]> {
   const res = await fetch(
-    process.env.NEXT_PUBLIC_API_BASE_URL + "/api/planeModels",
-    { cache: "no-store" }
+    process.env.NEXT_PUBLIC_API_BASE_URL + '/api/planeModels',
+    {cache: 'no-store'}
   );
   const data = await res.json();
   return data as PlaneModel[];

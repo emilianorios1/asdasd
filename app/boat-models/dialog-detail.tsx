@@ -1,4 +1,6 @@
-import { Button } from "@/components/ui/button";
+import {BoatModel} from '@/interfaces/backend-interfaces';
+
+import {Button} from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -8,11 +10,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { BoatModel } from "@/interfaces/backend-interfaces";
+} from '@/components/ui/dialog';
 
-export function DialogBoatModelDetail({ model }: { model: BoatModel }) {
-
+export const DialogBoatModelDetail = ({model}: {model: BoatModel}) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -22,20 +22,23 @@ export function DialogBoatModelDetail({ model }: { model: BoatModel }) {
         <DialogHeader>
           <DialogTitle>{model.name}</DialogTitle>
           <DialogDescription>
-            Brand: {model.brand.name}<br/>
-            Name: {model.name}<br/>
-            Engine size: {model.engineSize}<br/>
+            Brand: {model.brand.name}
+            <br />
+            Name: {model.name}
+            <br />
+            Engine size: {model.engineSize}
+            <br />
             Outboard: {model.isOutboard}
           </DialogDescription>
         </DialogHeader>
-          <DialogFooter className="sm:justify-start">
-            <DialogClose asChild>
-              <Button type="button" variant="secondary">
-                Close
-              </Button>
-            </DialogClose>
-          </DialogFooter>
+        <DialogFooter className="sm:justify-start">
+          <DialogClose asChild>
+            <Button type="button" variant="secondary">
+              Close
+            </Button>
+          </DialogClose>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
-}
+};

@@ -1,80 +1,76 @@
-"use client"
+'use client';
 
-import { useEffect, useState } from "react"
-import Image from "next/image"
-import { useRouter } from "next/navigation"
-import {
-  Brand,
-  CarModel,
-  CarPublication,
-} from "@/interfaces/backend-interfaces"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
+import {useEffect, useState} from 'react';
+import Image from 'next/image';
+import {useRouter} from 'next/navigation';
+import {Brand, CarModel, CarPublication} from '@/interfaces/backend-interfaces';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {useForm} from 'react-hook-form';
+import * as z from 'zod';
 
-import { Button } from "@/components/ui/button"
+import {Button} from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import ImageInputCloudinary from "@/components/ui/image-input-cloudinary"
-import { Input } from "@/components/ui/input"
+} from '@/components/ui/form';
+import ImageInputCloudinary from '@/components/ui/image-input-cloudinary';
+import {Input} from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
-import { useToast } from "@/components/ui/use-toast"
+} from '@/components/ui/select';
+import {Textarea} from '@/components/ui/textarea';
+import {useToast} from '@/components/ui/use-toast';
 
 const formSchema = z.object({
   brandId: z.number(),
   carModelId: z.number(),
-  imageUrl: z.string().min(2, "Upload an image"),
+  imageUrl: z.string().min(2, 'Upload an image'),
   mileage: z.coerce.number().min(1),
   year: z.number(),
   transmission: z.string().min(2),
   price: z.coerce.number().min(1),
   description: z.string().min(0),
-  contactNumber: z.string().refine(value => /^\+(?:[0-9]●?){6,14}[0-9]$/.test(value), {
-    message: "Please enter a valid phone number",
-  }),
-})
+  contactNumber: z
+    .string()
+    .refine((value) => /^\+(?:[0-9]●?){6,14}[0-9]$/.test(value), {
+      message: 'Please enter a valid phone number',
+    }),
+});
 
-export function DialogCarPublicationForm({
+export const DialogCarPublicationForm = ({
   publication,
   models,
   brands,
 }: {
-  publication?: CarPublication
-  models: CarModel[]
-  brands: Brand[]
-}) {
-  const router = useRouter()
-  let [open, setOpen] = useState(false)
-  const { toast } = useToast()
-  const [filteredModels, setFilteredModels] = useState<CarModel[]>([])
-  const currentYear = new Date().getFullYear()
-  const years: Number[] = []
+  publication?: CarPublication;
+  models: CarModel[];
+  brands: Brand[];
+}) => {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const {toast} = useToast();
+  const [filteredModels, setFilteredModels] = useState<CarModel[]>([]);
+  const currentYear = new Date().getFullYear();
+  const years: number[] = [];
   for (let year = currentYear; year >= 1950; year--) {
-    years.push(year)
+    years.push(year);
   }
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -82,11 +78,11 @@ export function DialogCarPublicationForm({
     defaultValues: {
       mileage: 0,
       price: 1,
-      transmission: "",
-      description: "",
-      contactNumber: "",
+      transmission: '',
+      description: '',
+      contactNumber: '',
     },
-  })
+  });
 
   useEffect(() => {
     if (open && publication) {
@@ -101,68 +97,69 @@ export function DialogCarPublicationForm({
         price: publication.price,
         description: publication.description,
         contactNumber: publication.contactNumber,
-      })
+      });
     }
-  }, [form, open, publication])
+  }, [form, open, publication]);
 
-  const handleBrandChange = (selectedBrandId: Number) => {
-    const brand = brands.find((brand) => brand.id === selectedBrandId)
+  const handleBrandChange = (selectedBrandId: number) => {
+    const brand = brands.find((brandAux) => brandAux.id === selectedBrandId);
     if (brand) {
-      const brandModels = models.filter((model) => model.brandId === brand.id)
-      setFilteredModels(brandModels)
+      const brandModels = models.filter((model) => model.brandId === brand.id);
+      setFilteredModels(brandModels);
     } else {
-      setFilteredModels([])
+      setFilteredModels([]);
     }
-  }
+  };
 
   async function onSubmit(formValues: z.infer<typeof formSchema>) {
-    const { brandId, ...newFormValues } = formValues //remove brandId
-    console.log("Submitting form", newFormValues)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const {brandId, ...newFormValues} = formValues; //remove brandId
+    console.log('Submitting form', newFormValues);
     try {
-      let response = new Response()
+      let response = new Response();
       if (publication) {
         response = await fetch(
           process.env.NEXT_PUBLIC_API_BASE_URL +
-            "/api/carPublications/" +
+            '/api/carPublications/' +
             publication.id,
           {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(formValues),
           }
-        )
+        );
       } else {
         response = await fetch(
-          process.env.NEXT_PUBLIC_API_BASE_URL + "/api/carPublications",
+          process.env.NEXT_PUBLIC_API_BASE_URL + '/api/carPublications',
           {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(newFormValues),
           }
-        )
+        );
       }
 
       if (!response.ok) {
-        const responseData = await response.json()
+        const responseData = await response.json();
         toast({
           description: responseData.error,
-          title: "Error",
-          variant: "destructive",
-        })
+          title: 'Error',
+          variant: 'destructive',
+        });
       } else {
-        setOpen(false)
-        router.refresh()
+        setOpen(false);
+        router.refresh();
         toast({
-          title: "Success",
-        })
+          title: 'Success',
+        });
       }
     } catch (error) {
-      console.error("Form submission error:", error)
+      console.error('Form submission error:', error);
       toast({
-        description: "Unexpected error",
-        title: "Error",
-        variant: "destructive",
-      })
+        description: 'Unexpected error',
+        title: 'Error',
+        variant: 'destructive',
+      });
     }
   }
 
@@ -170,25 +167,25 @@ export function DialogCarPublicationForm({
     <Form {...form}>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button>{publication ? `Edit` : "Add New"}</Button>
+          <Button>{publication ? `Edit` : 'Add New'}</Button>
         </DialogTrigger>
         <DialogContent className="max-h-screen overflow-y-scroll">
           <DialogHeader>
             <DialogTitle>
-              {publication ? `Edit ${publication}` : "Add New"}
+              {publication ? `Edit ${publication}` : 'Add New'}
             </DialogTitle>
           </DialogHeader>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
               name="brandId"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Brand</FormLabel>
                   <Select //onValueChange={field.onChange}
                     onValueChange={(id) => {
-                      field.onChange(Number(id))
-                      handleBrandChange(Number(id))
+                      field.onChange(Number(id));
+                      handleBrandChange(Number(id));
                     }}
                   >
                     <FormControl>
@@ -217,7 +214,7 @@ export function DialogCarPublicationForm({
             <FormField
               control={form.control}
               name="carModelId"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Model</FormLabel>
                   <Select
@@ -237,7 +234,7 @@ export function DialogCarPublicationForm({
                           >
                             {model.name}
                           </SelectItem>
-                        )
+                        );
                       })}
                     </SelectContent>
                   </Select>
@@ -248,7 +245,7 @@ export function DialogCarPublicationForm({
             <FormField
               control={form.control}
               name="year"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Year</FormLabel>
                   <Select
@@ -268,7 +265,7 @@ export function DialogCarPublicationForm({
                           >
                             {year.toString()}
                           </SelectItem>
-                        )
+                        );
                       })}
                     </SelectContent>
                   </Select>
@@ -279,7 +276,7 @@ export function DialogCarPublicationForm({
             <FormField
               control={form.control}
               name="imageUrl"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Image</FormLabel>
                   <FormControl>
@@ -293,9 +290,7 @@ export function DialogCarPublicationForm({
                         width={100}
                         height={100}
                       />
-                    ) : (
-                      <></>
-                    )}
+                    ) : null}
                   </>
                   <FormMessage />
                 </FormItem>
@@ -304,7 +299,7 @@ export function DialogCarPublicationForm({
             <FormField
               control={form.control}
               name="mileage"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Mileage</FormLabel>
                   <FormControl>
@@ -317,7 +312,7 @@ export function DialogCarPublicationForm({
             <FormField
               control={form.control}
               name="price"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Price</FormLabel>
                   <FormControl>
@@ -330,7 +325,7 @@ export function DialogCarPublicationForm({
             <FormField
               control={form.control}
               name="transmission"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Transmission</FormLabel>
                   <Select onValueChange={(value) => field.onChange(value)}>
@@ -351,7 +346,7 @@ export function DialogCarPublicationForm({
             <FormField
               control={form.control}
               name="description"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
@@ -366,7 +361,7 @@ export function DialogCarPublicationForm({
             <FormField
               control={form.control}
               name="contactNumber"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Contact Number</FormLabel>
                   <FormControl>
@@ -389,5 +384,5 @@ export function DialogCarPublicationForm({
         </DialogContent>
       </Dialog>
     </Form>
-  )
-}
+  );
+};

@@ -1,10 +1,17 @@
-"use client"
+'use client';
 
 import React from 'react';
-import { Input } from './input';
 
-const ImageInputCloudinary = ({ onChange }: {onChange: (imageUrl:string) => void}) => {
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+import {Input} from './input';
+
+const ImageInputCloudinary = ({
+  onChange,
+}: {
+  onChange: (imageUrl: string) => void;
+}) => {
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files && event.target.files[0];
     if (!file) return;
 
@@ -26,13 +33,7 @@ const ImageInputCloudinary = ({ onChange }: {onChange: (imageUrl:string) => void
     }
   };
 
-  return (
-    <Input
-      type="file"
-      accept="image/*"
-      onChange={handleImageUpload}
-    />
-  );
+  return <Input type="file" accept="image/*" onChange={handleImageUpload} />;
 };
 
 export default ImageInputCloudinary;
