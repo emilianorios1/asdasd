@@ -1,21 +1,22 @@
 'use client';
 
-import { useCallback, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import {useCallback, useState} from 'react';
+import {useRouter} from 'next/navigation';
 import {
+  Brand,
   PlaneModel,
   PlanePublication,
-  Brand,
 } from '@/interfaces/backend-interfaces';
-import { ColumnDef } from '@tanstack/react-table';
-import { useToggle } from 'react-use';
-import { Button } from '@/components/ui/button';
-import { DataTable } from '@/components/ui/data-table';
-import DeleteModal from '@/components/delete-modal';
-import { toast } from '@/components/ui/use-toast';
+import {ColumnDef} from '@tanstack/react-table';
+import {useToggle} from 'react-use';
 
-import { DialogPlanePublicationDetail } from './dialog-detail';
-import { DialogPlanePublicationForm } from './dialog-form';
+import {Button} from '@/components/ui/button';
+import {DataTable} from '@/components/ui/data-table';
+import {toast} from '@/components/ui/use-toast';
+import DeleteModal from '@/components/delete-modal';
+
+import {DialogPlanePublicationDetail} from './dialog-detail';
+import {DialogPlanePublicationForm} from './dialog-form';
 
 export const PlanePublicationsDataTable = ({
   publications,
@@ -26,8 +27,8 @@ export const PlanePublicationsDataTable = ({
   models: PlaneModel[];
   brands: Brand[];
 }) => {
- const columns: ColumnDef<PlanePublication>[] = [
-     {
+  const columns: ColumnDef<PlanePublication>[] = [
+    {
       accessorKey: 'id',
       header: 'ID',
     },
@@ -50,7 +51,7 @@ export const PlanePublicationsDataTable = ({
     {
       id: 'actions',
       header: 'Actions',
-      cell: ({ row }) => {
+      cell: ({row}) => {
         const publication = row.original;
         return (
           <div className="flex items-center justify-center space-x-3">

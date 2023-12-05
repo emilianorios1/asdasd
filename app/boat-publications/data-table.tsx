@@ -1,21 +1,22 @@
 'use client';
 
-import { useCallback, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import {useCallback, useState} from 'react';
+import {useRouter} from 'next/navigation';
 import {
   BoatModel,
   BoatPublication,
   Brand,
 } from '@/interfaces/backend-interfaces';
-import { ColumnDef } from '@tanstack/react-table';
-import { useToggle } from 'react-use';
-import { Button } from '@/components/ui/button';
-import { DataTable } from '@/components/ui/data-table';
-import DeleteModal from '@/components/delete-modal';
-import { toast } from '@/components/ui/use-toast';
+import {ColumnDef} from '@tanstack/react-table';
+import {useToggle} from 'react-use';
 
-import { DialogBoatPublicationDetail } from './dialog-detail';
-import { DialogBoatPublicationForm } from './dialog-form';
+import {Button} from '@/components/ui/button';
+import {DataTable} from '@/components/ui/data-table';
+import {toast} from '@/components/ui/use-toast';
+import DeleteModal from '@/components/delete-modal';
+
+import {DialogBoatPublicationDetail} from './dialog-detail';
+import {DialogBoatPublicationForm} from './dialog-form';
 
 export const BoatPublicationsDataTable = ({
   publications,
@@ -60,7 +61,7 @@ export const BoatPublicationsDataTable = ({
     {
       id: 'actions',
       header: 'Actions',
-      cell: ({ row }) => {
+      cell: ({row}) => {
         const publication = row.original;
         return (
           <div className="flex items-center justify-center space-x-3">

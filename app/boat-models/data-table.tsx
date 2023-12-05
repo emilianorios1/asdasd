@@ -1,19 +1,19 @@
 'use client';
 
-import { useCallback, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { BoatModel, Brand } from '@/interfaces/backend-interfaces';
-import { ColumnDef } from '@tanstack/react-table';
-import { ArrowUpDown } from 'lucide-react';
-import { useToggle } from 'react-use';
-import { Button } from '@/components/ui/button';
-import { DataTable } from '@/components/ui/data-table';
-import DeleteModal from '@/components/delete-modal';
-import { toast } from '@/components/ui/use-toast';
+import {useCallback, useState} from 'react';
+import {useRouter} from 'next/navigation';
+import {BoatModel, Brand} from '@/interfaces/backend-interfaces';
+import {ColumnDef} from '@tanstack/react-table';
+import {useToggle} from 'react-use';
 
-import { DialogBoatModelDetail } from './dialog-detail';
-import { DialogBoatModelForm } from './dialog-form';
+import {Button} from '@/components/ui/button';
+import {DataTable} from '@/components/ui/data-table';
+import {toast} from '@/components/ui/use-toast';
 import {DataTableColumnHeader} from '@/components/data-table-column-header';
+import DeleteModal from '@/components/delete-modal';
+
+import {DialogBoatModelDetail} from './dialog-detail';
+import {DialogBoatModelForm} from './dialog-form';
 
 export const BoatModelsDataTable = ({
   models,
@@ -36,7 +36,7 @@ export const BoatModelsDataTable = ({
     {
       accessorKey: 'name',
       id: 'Name',
-      header: ({ column }) => (
+      header: ({column}) => (
         <DataTableColumnHeader column={column} title="Model Name" />
       ),
     },
@@ -53,7 +53,7 @@ export const BoatModelsDataTable = ({
     {
       id: 'actions',
       header: 'Actions',
-      cell: ({ row }) => {
+      cell: ({row}) => {
         const model = row.original;
         return (
           <div className="flex items-center justify-center space-x-3">
