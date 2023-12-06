@@ -10,6 +10,7 @@ import {useToggle} from 'react-use';
 import {Button} from '@/components/ui/button';
 import {DataTable} from '@/components/ui/data-table';
 import {toast} from '@/components/ui/use-toast';
+import {DataTableColumnHeader} from '@/components/data-table-column-header';
 import DeleteModal from '@/components/delete-modal';
 
 import {DialogCarModelDetail} from './dialog-detail';
@@ -30,7 +31,9 @@ export const CarModelsDataTable = ({
     },
     {
       accessorKey: 'brand.name',
-      header: 'Brand',
+      header: ({column}) => (
+        <DataTableColumnHeader column={column} title="Brand" />
+      ),
       id: 'Brand',
     },
     {
