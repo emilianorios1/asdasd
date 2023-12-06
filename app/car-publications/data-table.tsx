@@ -9,11 +9,11 @@ import {useToggle} from 'react-use';
 import {Button} from '@/components/ui/button';
 import {DataTable} from '@/components/ui/data-table';
 import {toast} from '@/components/ui/use-toast';
+import {DataTableColumnHeader} from '@/components/data-table-column-header';
 import DeleteModal from '@/components/delete-modal';
 
 import {DialogCarPublicationDetail} from './dialog-detail';
 import {DialogCarPublicationForm} from './dialog-form';
-import { DataTableColumnHeader } from '@/components/data-table-column-header';
 
 export const CarPublicationsDataTable = ({
   publications,
