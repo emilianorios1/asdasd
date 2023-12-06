@@ -17,6 +17,7 @@ import DeleteModal from '@/components/delete-modal';
 
 import {DialogBoatPublicationDetail} from './dialog-detail';
 import {DialogBoatPublicationForm} from './dialog-form';
+import { DataTableColumnHeader } from '@/components/data-table-column-header';
 
 export const BoatPublicationsDataTable = ({
   publications,
@@ -35,27 +36,37 @@ export const BoatPublicationsDataTable = ({
     },
     {
       accessorKey: 'boatModel.name',
-      header: 'Model',
+      header: ({column}) => (
+        <DataTableColumnHeader column={column} title="Model" />
+      ),
       id: 'Model',
     },
     {
       accessorKey: 'boatModel.brand.name',
-      header: 'Brand',
+      header: ({column}) => (
+        <DataTableColumnHeader column={column} title="Brand" />
+      ),
       id: 'Brand',
     },
     {
       accessorKey: 'year',
-      header: 'Year',
+      header: ({column}) => (
+        <DataTableColumnHeader column={column} title="Year" />
+      ),
       id: 'Year',
     },
     {
       accessorKey: 'boatType',
-      header: 'Boat Type',
+      header: ({column}) => (
+        <DataTableColumnHeader column={column} title="Boat Type" />
+      ),
       id: 'BoatType',
     },
     {
       accessorKey: 'capacity',
-      header: 'Capacity',
+      header: ({column}) => (
+        <DataTableColumnHeader column={column} title="Capacity" />
+      ),
       id: 'Capacity',
     },
     {

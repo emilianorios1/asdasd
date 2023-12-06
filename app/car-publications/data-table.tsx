@@ -13,6 +13,7 @@ import DeleteModal from '@/components/delete-modal';
 
 import {DialogCarPublicationDetail} from './dialog-detail';
 import {DialogCarPublicationForm} from './dialog-form';
+import { DataTableColumnHeader } from '@/components/data-table-column-header';
 
 export const CarPublicationsDataTable = ({
   publications,
@@ -30,23 +31,33 @@ export const CarPublicationsDataTable = ({
     },
     {
       accessorKey: 'carModel.name',
-      header: 'Model',
+      header: ({column}) => (
+        <DataTableColumnHeader column={column} title="Model" />
+      ),
     },
     {
       accessorKey: 'carModel.brand.name',
-      header: 'Brand',
+      header: ({column}) => (
+        <DataTableColumnHeader column={column} title="Brand" />
+      ),
     },
     {
       accessorKey: 'year',
-      header: 'Year',
+      header: ({column}) => (
+        <DataTableColumnHeader column={column} title="Year" />
+      ),
     },
     {
       accessorKey: 'mileage',
-      header: 'Mileage',
+      header: ({column}) => (
+        <DataTableColumnHeader column={column} title="Mileage" />
+      ),
     },
     {
       id: 'actions',
-      header: 'Actions',
+      header: ({column}) => (
+        <DataTableColumnHeader column={column} title="Actions" />
+      ),
       cell: ({row}) => {
         const publication = row.original;
         return (

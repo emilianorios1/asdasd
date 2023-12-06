@@ -30,7 +30,9 @@ export const BoatModelsDataTable = ({
     },
     {
       accessorKey: 'brand.name',
-      header: 'Brand',
+      header: ({column}) => (
+        <DataTableColumnHeader column={column} title="Brand" />
+      ),
       id: 'Brand',
     },
     {
@@ -43,12 +45,16 @@ export const BoatModelsDataTable = ({
     {
       accessorKey: 'isOutboard',
       id: 'Outboard',
-      header: 'Outboard',
+      header: ({column}) => (
+        <DataTableColumnHeader column={column} title="Outboard" />
+      ),
     },
     {
       accessorKey: 'engineSize',
       id: 'Engine Size',
-      header: 'Engine Size',
+      header: ({column}) => (
+        <DataTableColumnHeader column={column} title="Engine Size" />
+      ),
     },
     {
       id: 'actions',

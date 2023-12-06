@@ -53,12 +53,17 @@ export const CarModelsDataTable = ({
     },
     {
       accessorKey: 'engineSize',
-      header: 'Engine Size',
+      header: ({column}) => (
+        <DataTableColumnHeader column={column} title="Engine Size" />
+      ),
       id: 'EngineSize',
+      
     },
     {
       accessorKey: 'numberOfDoors',
-      header: 'Number of Doors',
+      header: ({column}) => (
+        <DataTableColumnHeader column={column} title="Number of Doors" />
+      ),
       id: 'NumberOfDoors',
     },
     {

@@ -17,6 +17,7 @@ import DeleteModal from '@/components/delete-modal';
 
 import {DialogPlanePublicationDetail} from './dialog-detail';
 import {DialogPlanePublicationForm} from './dialog-form';
+import { DataTableColumnHeader } from '@/components/data-table-column-header';
 
 export const PlanePublicationsDataTable = ({
   publications,
@@ -34,19 +35,27 @@ export const PlanePublicationsDataTable = ({
     },
     {
       accessorKey: 'planeModel.name',
-      header: 'Model',
+      header: ({column}) => (
+        <DataTableColumnHeader column={column} title="Website URL" />
+      ),
     },
     {
       accessorKey: 'planeModel.brand.name',
-      header: 'Brand',
+      header: ({column}) => (
+        <DataTableColumnHeader column={column} title="Brand" />
+      ),
     },
     {
       accessorKey: 'year',
-      header: 'Year',
+      header: ({column}) => (
+        <DataTableColumnHeader column={column} title="Year" />
+      ),
     },
     {
       accessorKey: 'flighthours',
-      header: 'Flight Hours',
+      header: ({column}) => (
+        <DataTableColumnHeader column={column} title="Flight Hours" />
+      ),
     },
     {
       id: 'actions',
