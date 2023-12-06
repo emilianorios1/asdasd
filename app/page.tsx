@@ -12,13 +12,13 @@ const IndexPage = () => {
         <p className="max-w-[700px] text-lg text-muted-foreground">
           Alumnos:
           <br />
-          Benjamin Jaime
+          Benjamin Jaime (Legajo: 45861)
           <br />
-          Altuzarra Tomas
+          Altuzarra Tomas (Legajo: 45840)
           <br />
-          Mateo Emilio
+          Mateo Emilio (Legajo: 46792)
           <br />
-          Emiliano Rios
+          Emiliano Rios (Legajo: 46408)
         </p>
       </div>
       <div className="flex gap-4">
