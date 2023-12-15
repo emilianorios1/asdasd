@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import {buttonVariants} from '@/components/ui/button';
+import { getSession } from '@auth0/nextjs-auth0';
 
 
 const IndexPage = () => {
@@ -49,7 +50,7 @@ const IndexPage = () => {
         </Link>
 
         <Link
-          href="/profile-client"
+          href="/profile"
           className={buttonVariants()}
         >
           Mi perfil

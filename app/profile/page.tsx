@@ -1,5 +1,4 @@
-'use client';
-
+'use client'
 import { buttonVariants } from '@/components/ui/button';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import Link  from 'next/link';
@@ -7,7 +6,6 @@ import Image from 'next/image';
 
 export default function ProfileClient() {
   const { user, error, isLoading } = useUser();
-
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
     console.log(user);
