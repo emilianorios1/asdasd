@@ -1,6 +1,8 @@
 import Link from 'next/link';
-
+import { useUser } from '@auth0/nextjs-auth0/client';
 import {buttonVariants} from '@/components/ui/button';
+
+ const { user, error, isLoading } = useUser();
 
 const IndexPage = () => {
   return (
