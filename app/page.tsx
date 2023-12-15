@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import {buttonVariants} from '@/components/ui/button';
 
- const { user, error, isLoading } = useUser();
 
 const IndexPage = () => {
   return (
@@ -40,6 +39,20 @@ const IndexPage = () => {
           className={buttonVariants()}
         >
           Repositorio Back
+        </Link>
+
+        <Link
+          href="/api/auth/login"
+          className={buttonVariants()}
+        >
+          Login
+        </Link>
+
+        <Link
+          href="/profile-client"
+          className={buttonVariants()}
+        >
+          Mi perfil
         </Link>
       </div>
     </section>
