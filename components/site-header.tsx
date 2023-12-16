@@ -43,6 +43,20 @@ export const SiteHeader = () => {
                 <span className="sr-only">Twitter</span>
               </div>
             </Link>
+            <Link
+              href="/profile"
+              rel="noreferrer"
+            >
+              <div
+                className={buttonVariants({
+                  size: 'sm',
+                  variant: 'ghost',
+                })}
+              >
+                <Icons.user className="h-5 w-5 fill-current" />
+                <span className="sr-only">Profile</span>
+              </div>
+            </Link>
             <ThemeToggle />
           </nav>
         </div>

@@ -8,7 +8,7 @@ import checkAdmin from '@/services/checkAdmin';
 export default async function CategoriesPage() {
   const brands = await getBrands();
   const isAdmin = await checkAdmin();
-  if (!isAdmin) {return <h1 className="text-4xl font-bold sm:text-6xl">404 Unauthorized</h1>}
+  if (!isAdmin) {return <h1 className="flex items-center h-screen text-4xl font-bold justify-center sm:text-6xl">404 Unauthorized</h1>}
   return (
     <div className="container mt-10 flex flex-col justify-center space-y-6 text-center">
       <div className="flex flex-row items-center justify-between">
