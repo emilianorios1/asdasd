@@ -1,9 +1,7 @@
 import {NextRequest, NextResponse} from 'next/server';
 import {getSession} from '@auth0/nextjs-auth0/edge';
 
-export async function middleware(
-  req: NextRequest
-) {
+export async function middleware(req: NextRequest) {
   const response = NextResponse.next({
     request: {
       headers: new Headers(req.headers),
