@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import {buttonVariants} from '@/components/ui/button';
 
+import {buttonVariants} from '@/components/ui/button';
 
 const IndexPage = () => {
   return (
@@ -40,13 +40,9 @@ const IndexPage = () => {
           Repositorio Back
         </Link>
 
-        <Link
-          href="/api/auth/login"
-          className={buttonVariants()}
-        >
+        <Link href="/api/auth/login" className={buttonVariants()}>
           Login
         </Link>
-        
       </div>
     </section>
   );

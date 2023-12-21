@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Link from 'next/link';
 import {NavItem} from '@/interfaces/nav';
+import checkAdmin from '@/services/checkAdmin';
 
 import {siteConfig} from '@/config/site';
 import {cn} from '@/lib/utils';
 import {Icons} from '@/components/icons';
-import checkAdmin from '@/services/checkAdmin';
 
 interface MainNavProps {
   items?: NavItem[];
@@ -13,7 +13,7 @@ interface MainNavProps {
 export const MainNav = async ({items}: MainNavProps) => {
   const isAdmin = await checkAdmin();
 
-  const filteredItems = items?.filter(item => isAdmin || !item.adminReq)
+  const filteredItems = items?.filter((item) => isAdmin || !item.adminReq);
 
   return (
     <div className="flex gap-6 md:gap-10">

@@ -1,6 +1,7 @@
 import '@/styles/globals.css';
 
 import {Metadata} from 'next';
+import {UserProvider} from '@auth0/nextjs-auth0/client';
 
 import {siteConfig} from '@/config/site';
 import {fontSans} from '@/lib/fonts';
@@ -9,7 +10,6 @@ import {Toaster} from '@/components/ui/toaster';
 import {SiteHeader} from '@/components/site-header';
 import {TailwindIndicator} from '@/components/tailwind-indicator';
 import {ThemeProvider} from '@/components/theme-provider';
-import { UserProvider } from '@auth0/nextjs-auth0/client';
 
 export const metadata: Metadata = {
   title: {
@@ -33,21 +33,19 @@ const RootLayout = ({children}: RootLayoutProps) => {
     <html lang="en">
       <head />
       <UserProvider>
-        
-      <body
-        className={cn(
-          'min-h-screen overflow-hidden bg-background font-sans antialiased',
-          fontSans.variable
-        )}
-      >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <SiteHeader />
-          {children}
-          <TailwindIndicator />
-        </ThemeProvider>
-        <Toaster />
-      </body>
-      
+        <body
+          className={cn(
+            'min-h-screen overflow-hidden bg-background font-sans antialiased',
+            fontSans.variable
+          )}
+        >
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <SiteHeader />
+            {children}
+            <TailwindIndicator />
+          </ThemeProvider>
+          <Toaster />
+        </body>
       </UserProvider>
     </html>
   );

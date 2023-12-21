@@ -1,14 +1,16 @@
-'use client'
-import { buttonVariants } from '@/components/ui/button';
-import { useUser } from '@auth0/nextjs-auth0/client';
-import Link  from 'next/link';
-import Image from 'next/image';
+'use client';
 
-export default function ProfileClient() {
-  const { user, error, isLoading } = useUser();
+import Image from 'next/image';
+import Link from 'next/link';
+import {useUser} from '@auth0/nextjs-auth0/client';
+
+import {buttonVariants} from '@/components/ui/button';
+
+export const ProfileClient = () => {
+  const {user, error, isLoading} = useUser();
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
-    console.log(user);
+  console.log(user);
   if (user && user.picture && user.name && user.email) {
     return (
       <div>
@@ -16,24 +18,16 @@ export default function ProfileClient() {
         <h2>{user.name}</h2>
         <p>{user.email}</p>
 
-        <Link
-          href="/api/auth/logout"
-          className={buttonVariants()}
-        >
+        <Link href="/api/auth/logout" className={buttonVariants()}>
           Logout
         </Link>
 
-        <Link
-          href="/"
-          className={buttonVariants()}
-        >
+        <Link href="/" className={buttonVariants()}>
           Home
         </Link>
-
-
       </div>
     );
   }
 
   return null; // o algún otro JSX/elemento que desees mostrar si el usuario no está definido
-}
+};

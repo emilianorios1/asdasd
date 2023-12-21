@@ -10,7 +10,6 @@ import 'swiper/css/navigation';
 //Imagenes
 import Image from 'next/image';
 import {CarPublication} from '@/interfaces/backend-interfaces';
-import {getCarPublications} from '@/services/carPublications';
 import {EffectCoverflow, Navigation, Pagination} from 'swiper/modules';
 
 interface CarruselCarsProps {
@@ -46,20 +45,22 @@ const CarruselCars: React.FC<CarruselCarsProps> = ({cars}) => {
           <SwiperSlide key={car.id}>
             <a className="cursor-pointer ">
               {/* Card */}
-              <div className='max-h-[500px]  pt-5'>
+              <div className="max-h-[500px]  pt-5">
                 <div>
                   <Image
                     src={car.imageUrl}
                     width="800"
                     height="100"
                     alt={`Car Image`}
-                    className="xl:max-h-fit md:float-right rounded-t-md mb-2 "
+                    className="mb-2 rounded-t-md md:float-right xl:max-h-fit "
                   ></Image>
                 </div>
-                <div className='bg-gray-600  '>
-                  <h1 className='mx-3 my-2 font-bold'>{car.carModel.name}</h1>
-                  <h1 className='mx-3 my-3'>{car.description}</h1>
-                  <p className=' bg-orange-600 py-2 font-semibold rounded-b-md'>&nbsp;&nbsp; Precio: ${car.price}</p>
+                <div className="bg-gray-600  ">
+                  <h1 className="mx-3 my-2 font-bold">{car.carModel.name}</h1>
+                  <h1 className="m-3">{car.description}</h1>
+                  <p className=" rounded-b-md bg-orange-600 py-2 font-semibold">
+                    &nbsp;&nbsp; Precio: ${car.price}
+                  </p>
                 </div>
               </div>
             </a>

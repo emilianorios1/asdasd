@@ -43,10 +43,7 @@ export const SiteHeader = () => {
                 <span className="sr-only">Twitter</span>
               </div>
             </Link>
-            <Link
-              href="/profile"
-              rel="noreferrer"
-            >
+            <Link href="/profile" rel="noreferrer">
               <div
                 className={buttonVariants({
                   size: 'sm',
