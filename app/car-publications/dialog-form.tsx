@@ -125,7 +125,7 @@ export const DialogCarPublicationForm = ({
           {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(formValues),
+            body: JSON.stringify(newFormValues),
           }
         );
       } else {
