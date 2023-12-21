@@ -10,8 +10,7 @@ export async function getBrands(): Promise<Brand[]> {
 }
 
 export async function deleteBrand(brandId: number): Promise<void> {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/brands/${brandId}`,
+  const response = await fetch(`/api/brands/${brandId}`,
     {
       method: 'DELETE',
       cache: 'no-store',

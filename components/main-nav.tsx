@@ -5,21 +5,25 @@ import {NavItem} from '@/interfaces/nav';
 import {siteConfig} from '@/config/site';
 import {cn} from '@/lib/utils';
 import {Icons} from '@/components/icons';
+import checkAdmin from '@/services/checkAdmin';
 
 interface MainNavProps {
   items?: NavItem[];
 }
+export const MainNav = async ({items}: MainNavProps) => {
+  const isAdmin = await checkAdmin();
 
-export const MainNav = ({items}: MainNavProps) => {
+  const filteredItems = items?.filter(item => isAdmin || !item.adminReq)
+
   return (
     <div className="flex gap-6 md:gap-10">
       <Link href="/" className="flex items-center space-x-2">
         <Icons.logo className="h-6 w-6" />
         <span className="inline-block font-bold">{siteConfig.name}</span>
       </Link>
-      {items?.length ? (
+      {filteredItems?.length ? (
         <nav className="flex gap-6">
-          {items?.map(
+          {filteredItems?.map(
             (item, index) =>
               item.href && (
                 <Link

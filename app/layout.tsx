@@ -9,6 +9,7 @@ import {Toaster} from '@/components/ui/toaster';
 import {SiteHeader} from '@/components/site-header';
 import {TailwindIndicator} from '@/components/tailwind-indicator';
 import {ThemeProvider} from '@/components/theme-provider';
+import { UserProvider } from '@auth0/nextjs-auth0/client';
 
 export const metadata: Metadata = {
   title: {
@@ -31,6 +32,8 @@ const RootLayout = ({children}: RootLayoutProps) => {
   return (
     <html lang="en">
       <head />
+      <UserProvider>
+        
       <body
         className={cn(
           'min-h-screen overflow-hidden bg-background font-sans antialiased',
@@ -44,6 +47,8 @@ const RootLayout = ({children}: RootLayoutProps) => {
         </ThemeProvider>
         <Toaster />
       </body>
+      
+      </UserProvider>
     </html>
   );
 };
