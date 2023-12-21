@@ -10,12 +10,10 @@ export async function getBrands(): Promise<Brand[]> {
 }
 
 export async function deleteBrand(brandId: number): Promise<void> {
-  const response = await fetch(`/api/brands/${brandId}`,
-    {
-      method: 'DELETE',
-      cache: 'no-store',
-    }
-  );
+  const response = await fetch(`/api/brands/${brandId}`, {
+    method: 'DELETE',
+    cache: 'no-store',
+  });
 
   if (!response.ok) {
     throw new Error('Failed to delete the brand');
