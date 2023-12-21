@@ -1,7 +1,7 @@
 import {NextRequest, NextResponse} from 'next/server';
-import {getSession, withMiddlewareAuthRequired} from '@auth0/nextjs-auth0/edge';
+import {getSession} from '@auth0/nextjs-auth0/edge';
 
-export default withMiddlewareAuthRequired(async function middleware(
+export async function middleware(
   req: NextRequest
 ) {
   const response = NextResponse.next({
@@ -14,9 +14,8 @@ export default withMiddlewareAuthRequired(async function middleware(
   const token = user?.accessToken;
 
   response.headers.set('Authorization', `Bearer ${token}`);
-
   return response;
-});
+}
 
 export const config = {
   matcher: ['/private/:path*', '/api/:path*', '/profile/:path*'],
