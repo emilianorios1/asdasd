@@ -173,7 +173,7 @@ export const DialogPlanePublicationForm = ({
         <DialogContent className="max-h-screen overflow-y-scroll">
           <DialogHeader>
             <DialogTitle>
-              {publication ? `Edit ${publication}` : 'Add New'}
+              {publication ? `Edit ${publication.planeModel.name}` : 'Add New'}
             </DialogTitle>
           </DialogHeader>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
